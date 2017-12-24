@@ -1,0 +1,156 @@
+Module 3: Jenkins lab setup
+============================
+https://pkg.jenkins.io/debian/ -> URL for Jenkins installation steps
+
+1) apt-get update -y 
+
+
+2) install security to avoid virous:
+
+wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
+
+(or)
+wget  https://pkg.jenkins.io/debian/jenkins.io.key 
+apt-key add jenkins.io.key
+
+3) vi /etc/apt/sources.list
+#create jenkins.list with following content
+#dep for remote repository
+deb http://pkg.jenkins.io/debian-stable binary/ 
+
+4) apt-get update -y => update cache once again
+
+5) check url ok? 
+apt-cache search jenkins | grep jenkins
+
+6) install jenkins:
+apt-get install jenkins -y
+
+7) go to browser of jenkins server
+http://192.168.0.14:8080
+
+8) copy:  for the security purpose...
+root@jenkins-server:/etc/apt/sources.list.d# cat /var/lib/jenkins/secrets/initialAdminPassword
+c4d82994af764378bf47c353afd24c2b
+
+9) select "installl suggested plug in" option
+
+
+10) create first admin user,
+root/redhat
+
+11) start using jenkins
+
+12) to create regular user...in configure global security:
+enable ( or select) allow user to sign up ( security relim)
+
+
+13) logoutand create readonly user at the front end...
+
+logout as root and in the create user link create just read only user like
+testuser/testuser/TestUser/test@test.com
+
+14) Create more user if required
+
+*******************************
+optional steps ( if console is not working)
+15) service jenkins restart
+16) sudo /etc/init.d/jenkins restart => to restart jenkins
+
+******************************
+
+17) give root adminstrative permission and testuser read only in configure global security
+
+ login as root and manage jenkins, configure global security
+ Matrix-based security 
+ add  root user and testuser and set...
+ root -> admin previlages ( over all permission)
+ testuser > readonly ( Over all permission) and in job option read permission
+
+
+now login as testuser and check manage jenkins is not avaiaible...
+ 
+ 
+18) login as root user and create new job
+	1) MyFirstDevOps as free style project ....
+
+	2) manage jenkins and global tool configuration, add JDK
+	JDK name -> java
+	SE development kit 8u144
+
+	I agree and put your oracle credential( if not there sign up...
+
+	3) install maven ( build tool for java application)
+	add mavem ( globl tool config)
+	Maven
+
+	4) git already there is the machine...
+
+19) Build the project "MyFirstDevOps"
+	
+19) install plug ins @ manage jenkins => manager plugins
+
+
+Job ( Project)   -> jenkins pkg
+===============================
+Developer compile -> NA
+Developer code review -> PMD ( programming Mistake deducter) 
+QA Unit test -> junit
+QA Metric check ( Code Coverage) -> cobortura
+QA packing -> WAR build pkg
+Deploy -> NA 
+
+following plugins needs to be installed
+=======================================
+1) Build Pipe Line Plugin search from availble -> install without restart ("Build Pipeline Plugin")
+2) PMD Plug-in ("PMD Plug-in")
+3) Cobertura Plugin ("Cobertura Plugin")
+4) HTML publisher plug in ("HTML Publisher plugin")
+5) junit -> already must have installed..("JUnit Plugin")
+
+Final list of pkgs -> jdk, maven ( it will have war build as well), junit, build Piepline, PMD, Corbortura,HTML Publisher, JUnit
+
+20) create dummy following projects first
+		001-checkout-code
+		002-check-code-error
+		003-junit-testing
+		004-code-coverage-testing
+		005-generate-war-file
+		006-deploy-to-tomcat
+		007-deploy-to-docker
+		008-deploy-to-puppet
+
+22) connect projects..
+build another project  
+001 -> 002 -> 003 -> 004 ->005 -> 006 ->007 -> 008
+
+23) create pipe line ( at + )... name like "Devops-Delivery-Pipleline"
+	and select initial job 001
+	
+24) do dry-run on the piple line build
+
+*************************************************************************************************
+
+Package requirment
+==================
+Task				Pkg
+Develop Compile		NR
+Code-coverage 		PMD( Programming Mistake dedcuter)
+QA-Unit-Test 		JUnit
+Code-Coverage-test	Corbertura
+QA Pkging			WAR build pkg
+Deploy 				NA
+
+
+pipe line
+=========
+001-checkout-code
+002-check-code-error
+003-junit-testing
+004-code-coverage-testing
+005-generate-war-file
+006-deploy-to-tomcat
+007-deploy-to-docker
+008-deploy-to-puppet
+
+*******************************************

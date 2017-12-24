@@ -1,0 +1,75 @@
+Project 1:
+===========
+
+Step1: 001-checkout-code
+config: source code git
+post-build: 
+02-check-code-error
+
+
+Project 2
+==========
+Step2: 002-check-code-error
+config: git source code
+build: 
+Invoke top-level Maven targets
+Maven Version : Maven
+Goals: -P metrics pmd:pmd
+
+Post Build Action:
+publish pmd analysis result
+ **/*.xml
+Projects to build:
+003-junit-testing
+
+
+Problem faced ( needed to install maven in server )
+
+003-junit-testing project configiguration 
+===========================================
+Source Code: /src/test/java/com/edureka/utilities/
+
+Step3:
+003-junit-testing
+source code git
+Invoke top level maven targets
+Maven Version :Maven
+goal : test
+
+post build action:
+publish junit test result:
+**/*.xml
+Project to build: 004-code-coverage-testing
+
+004-code-coverage-testing - project configuration
+==================================================
+Step4:004-code-coverage-testing
+source code : git
+invoke top level maven target :
+Maven 
+cobertura:cobertura
+
+Publish HTLP report:
+HTMP dir to archive: target/site/cobertura
+Index pages: index.html
+Report title: HTML report
+
+Note: Download HTML_report.zip file and unzip the same open index.html in the brower for the detailed report.
+code with colored are covered
+
+
+
+005-generate-war-file project configuration - i.e create artifacts
+===================================================================
+Step5: 005-generate-war-file
+Source -> git
+Invoke top label Maven target
+Maven version:Maven 
+Goal: package
+post build action : Archive Artifacts
+**/target/addressbook.war
+
+Project to build: 006-deploy-to-tomcat
+
+addressbook.war => 15.77MB size..this will be used till the end of the project...
+

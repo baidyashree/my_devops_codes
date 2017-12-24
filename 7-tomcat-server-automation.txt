@@ -1,0 +1,103 @@
+tomcat deployment automation
+============================
+ansible - remote deployment tool : install ansible in jenkins machine
+===========================================================================
+jenkins-server ansible installation
+=====================================
+1) apt-get update -y; apt-add-repository ppa:ansible/ansible
+2) apt-get update ==> update the cache after adding repository
+3) apt-get install ansible -y
+4) ansible --version
+5) export EDITOR=vim
+6) visudo 
+
+#
+# This file MUST be edited with the 'visudo' command as root.
+#
+# Please consider adding local content in /etc/sudoers.d/ instead of
+# directly modifying this file.
+#
+# See the man page for details on how to write a sudoers file.
+#
+Defaults        env_reset
+Defaults        mail_badpass
+Defaults        secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+
+# Host alias specification
+
+# User alias specification
+
+# Cmnd alias specification
+
+# User privilege specification
+root    ALL=(ALL:ALL) ALL
+jenkins ALL=(ALL:ALL) NOPASSWD:ALL   ==> only this line needs to be added. all jenkins user has sudo access and passwordless connectivity.
+
+# Members of the admin group may gain root privileges
+%admin ALL=(ALL) ALL
+
+# Allow members of group sudo to execute any command
+%sudo   ALL=(ALL:ALL) ALL
+
+# See sudoers(5) for more information on "#include" directives:
+
+#includedir /etc/sudoers.d
+
+7)vim /etc/ansible/hosts 
+delete old entry and recreate as following.. first add tomcat alone.. 
+
+[local]
+127.0.0.1 anisible_ssh_user=root ansible_ssh_pass=redhat
+[tomcat-server]
+192.168.0.4 anisible_ssh_user=root ansible_ssh_pass=redhat
+
+Following can be added later
+============================
+[docker-server]
+192.168.0.9 anisible_ssh_user=root ansible_ssh_pass=redhat
+[puppet-server]
+192.168.0.8 anisible_ssh_user=root ansible_ssh_pass=redhat
+[puppet-client]
+192.168.0.10 anisible_ssh_user=root ansible_ssh_pass=redhat
+
+8) vim /etc/ansible/ansible.cfg
+uncomment following line,
+# uncomment this to disable SSH key host checking
+host_key_checking = False   => disable to hosy_key checking.. then only ansible will work... by default its enabled..
+
+9) ansible all -m ping 
+
+10) add jenkins-server name in /etc/hosts as well, as follows:
+root@jenkins-server:~# cat /etc/hosts
+127.0.0.1       localhost
+127.0.1.1       jenkins-server
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+root@jenkins-server:~#
+
+33) 006-deploy-to-tomcat project configuration:
+===============================================
+Step6: 006-deploy-to-tomcat
+Build excute shell:
+sudo ansible tomcat-server -m shell -a "rm -rfv /opt/tomcat/webapps/addressbook.war"
+sudo ansible local -m shell -a "cp /var/lib/jenkins/workspace/005-create-war-file/target/addressbook.war /opt/"
+sudo ansible tomcat-server -m copy -a "src=/opt/addressbook.war dest=/opt/tomcat/webapps/"
+sudo ansible tomcat-server -m shell -a "systemctl stop tomcat.service"
+sudo ansible tomcat-server -m shell -a "systemctl start tomcat.service"
+
+note:
+shell, copy are ansible module...local mean local server, tomcat-server -> remote m/c
+copy/shell modules should have -a flag.
+-m -> for module
+
+ 
+34) Modify following line in addressbookUI.java and run build pipeline and check changes appears in tomcat server webpage.
+===========================================================================================================================
+./src/main/java/com/edurekademo/tutorial/addressbook/AddressbookUI.java:        filter.setInputPrompt("I changed this after adding a remove build to check if its getting propagated across the pipeline.");
+
+"This is Appar and I am testing after tomcat integration on <date and time>."
+
+**************************************************************************

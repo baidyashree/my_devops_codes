@@ -1,0 +1,393 @@
+Bash scripts
+=============
+1) which bash
+
+2)File : hello_world.sh 
+
+#!/bin/bash
+# declare STRING variable
+STRING="Hello World"
+#print variable on a screen
+echo $STRING
+
+3) backup.sh
+#!/bin/bash
+tar -czf myhome_directory.tar.gz /home/linuxconfig
+
+4) variables.sh
+#!/bin/bash
+#Define bash global variable
+#This variable is global and can be used anywhere in this bash script
+VAR="global variable"
+function bash {
+#Define bash local variable
+#This variable is local to bash function only
+local VAR="local variable"
+echo $VAR
+}
+echo $VAR
+bash
+# Note the bash global variable did not change
+# "local" is bash reserved word
+echo $VAR
+
+5) arguments.sh
+#!/bin/bash
+# use predefined variables to access passed arguments
+#echo arguments to the shell
+echo $1 $2 $3
+n1=$1
+n2=$2
+echo `expr ans=$((n1+n2))`
+
+6) backtick.sh
+#!/bin/bash
+# use backticks " ` ` " to execute shell command
+echo `uname -o`
+# executing bash command without backticks
+echo uname -o 
+
+
+7)read.sh
+#!/bin/bash
+ 
+echo -e "Hi, please type the word: \c "
+read  word
+echo "The word you entered is: $word"
+echo -e "Can you please enter two words? "
+read word1 word2
+echo "Here is your input: \"$word1\" \"$word2\""
+echo -e "How do you feel about bash scripting? "
+# read command now stores a reply into the default build-in variable $REPLY
+read
+echo "You said $REPLY, I'm glad to hear that! "
+echo -e "What are your favorite colours ? "
+# -a makes read command to read into an array
+read -a colours
+echo "My favorite colours are also ${colours[0]}, ${colours[1]} and ${colours[2]}:-)" 
+
+8) bashtrap.sh
+#!/bin/bash
+# bash trap command
+trap bashtrap INT
+# bash clear screen command
+clear;
+# bash trap function is executed when CTRL-C is pressed:
+# bash prints message => Executing bash trap subrutine !
+bashtrap()
+{
+    echo "CTRL+C Detected !...executing bash trap !"
+}
+# for loop from 1/10 to 10/10
+for a in `seq 1 10`; do
+    echo "$a/10 to Exit." 
+    sleep 1;
+done
+echo "Exit Bash Trap Example!!!" 
+
+9) arrays.sh
+#!/bin/bash
+#Declare array with 4 elements
+ARRAY=( 'Debian Linux' 'Redhat Linux' Ubuntu Linux )
+# get number of elements in the array
+ELEMENTS=${#ARRAY[@]}
+
+# echo each element in array 
+# for loop
+for (( i=0;i<$ELEMENTS;i++)); do
+    echo ${ARRAY[${i}]}
+done  
+
+
+10) bash_if_else.sh
+#!/bin/bash
+directory="./BashScripting"
+
+# bash check if directory exists
+if [ -d $directory ]; then
+	echo "Directory exists"
+else 
+	echo "Directory does not exists"
+fi 
+
+11) nested_if_else.sh
+#!/bin/bash
+ 
+# Declare variable choice and assign value 4
+choice=4
+# Print to stdout
+ echo "1. Bash"
+ echo "2. Scripting"
+ echo "3. Tutorial"
+ echo -n "Please choose a word [1,2 or 3]? "
+# Loop while the variable choice is equal 4
+# bash while loop
+while [ $choice -eq 4 ]; do
+ 
+# read user input
+read choice
+# bash nested if/else
+if [ $choice -eq 1 ] ; then
+ 
+        echo "You have chosen word: Bash"
+
+else                   
+
+        if [ $choice -eq 2 ] ; then
+                 echo "You have chosen word: Scripting"
+        else
+         
+                if [ $choice -eq 3 ] ; then
+                        echo "You have chosen word: Tutorial"
+                else
+                        echo "Please make a choice between 1-3 !"
+                        echo "1. Bash"
+                        echo "2. Scripting"
+                        echo "3. Tutorial"
+                        echo -n "Please choose a word [1,2 or 3]? "
+                        choice=4
+                fi   
+        fi
+fi
+done 
+
+12) statement.sh
+#!/bin/bash
+# declare integers
+NUM1=2
+NUM2=2
+if [ $NUM1 -eq $NUM2 ]; then
+	echo "Both Values are equal"
+else 
+	echo "Values are NOT equal"
+fi 
+
+13) 
+#!/bin/bash
+# declare integers
+NUM1=2
+NUM2=1
+if   [ $NUM1 -eq $NUM2 ]; then
+	echo "Both Values are equal"
+elif [ $NUM1 -gt $NUM2 ]; then
+	echo "NUM1 is greater then NUM2"
+else 
+	echo "NUM2 is greater then NUM1"
+fi 
+
+14) stringcomp.sh
+#!/bin/bash
+#Declare string S1
+S1="Bash"
+#Declare string S2
+S2="Scripting"
+if [ $S1 = $S2 ]; then
+	echo "Both Strings are equal"
+else 
+	echo "Strings are NOT equal"
+fi   
+
+15) fileexit.sh
+#!/bin/bash
+file="./file"
+if [ -e $file ]; then
+	echo "File exists"
+else 
+	echo "File does not exists"
+fi 
+
+16) for_loop.sh
+
+#!/bin/bash
+
+# bash for loop
+for f in $( ls /var/ ); do
+	echo $f
+done 
+
+17) while_loop.sh
+#!/bin/bash
+COUNT=6
+# bash while loop
+while [ $COUNT -gt 0 ]; do
+	echo Value of count is: $COUNT
+	let COUNT=COUNT-1
+done 
+
+18) until_loop.sh
+#!/bin/bash
+COUNT=0
+# bash until loop
+until [ $COUNT -gt 5 ]; do
+        echo Value of count is: $COUNT
+        let COUNT=COUNT+1
+done 
+
+19) function.sh
+
+!/bin/bash
+# BASH FUNCTIONS CAN BE DECLARED IN ANY ORDER
+function function_B {
+        echo Function B.
+}
+function function_A {
+        echo $1
+}
+function function_D {
+        echo Function D.
+}
+function function_C {
+        echo $1
+}
+# FUNCTION CALLS
+# Pass parameter to function A
+function_A "Function A."
+function_B
+# Pass parameter to function C
+function_C "Function C."
+function_D 
+
+20) select.sh
+#!/bin/bash
+ 
+PS3='Choose one word: ' 
+
+# bash select
+select word in "linux" "bash" "scripting" "tutorial" 
+do
+  echo "The word you have selected is: $word"
+# Break, otherwise endless loop
+  break  
+done
+
+exit 0 
+
+21) case.sh
+#!/bin/bash
+echo "What is your preferred programming / scripting language"
+echo "1) bash"
+echo "2) perl"
+echo "3) phyton"
+echo "4) c++"
+echo "5) I do not know !"
+read case;
+#simple case bash structure
+# note in this case $case is variable and does not have to
+# be named case this is just an example
+case $case in
+    1) echo "You selected bash";;
+    2) echo "You selected perl";;
+    3) echo "You selected phyton";;
+    4) echo "You selected c++";;
+    5) exit
+esac 
+
+22) add.sh
+#!/bin/bash
+ 
+let RESULT1=$1+$2
+echo $1+$2=$RESULT1 ' -> # let RESULT1=$1+$2'
+declare -i RESULT2
+RESULT2=$1+$2
+echo $1+$2=$RESULT2 ' -> # declare -i RESULT2; RESULT2=$1+$2'
+echo $1+$2=$(($1 + $2)) ' -> # $(($1 + $2))' 
+
+
+
+24) calc_with_case.sh 
+
+clear
+sum=0
+echo " Enter one no."
+read n1
+echo "Enter second no."
+read n2
+
+echo "1.Addition"
+echo "2.Subtraction"
+echo "3.Multiplication"
+echo "4.Division"
+
+echo "Enter your choice"
+read ch
+
+case $ch in
+1)sum=`expr $n1 + $n2`
+   echo "Sum ="$sum;;
+
+2)sum=`expr $n1 - $n2`
+   echo "Sub = "$sum;;
+
+3)sum=`expr $n1 \* $n2`
+   echo "Mul = "$sum;;
+
+4)sum=`expr $n1 / $n2`
+    echo "Div = "$sum;;
+
+*)echo "Invalid choice";;
+esac
+
+23) calc_with switch
+
+echo "Enter Your Choise : "
+echo "1.Addition"
+echo "2.Substtaction"
+echo "3.Multiplication"
+echo "4.Division"
+read opr
+echo "Enter first Number : "
+read n1
+echo "Enter second Number : "
+read n2
+
+if [ $opr = 1 ]; then
+  echo `expr ans=$((n1+n2))`
+elif [ $opr = 2 ]; then
+  echo `expr ans=$((n1-n2))`
+elif [ $opr = 3 ]; then
+  echo `expr ans=$((n1*n2))`
+elif [ $opr = 4 ]; then
+  echo `expr ans=$((n1/n2))`
+else
+  echo "Please try again from given options only."
+fi
+
+
+another way,
+Calc program: 
+=============
+#!/bin/bash
+
+echo "choose the operator"
+read oper
+
+case $oper in
+    '+' )
+        echo "you want to make addition"
+        ;;
+    '-' )
+        echo "you want to make subtraction"
+        ;;
+    '*' )
+        echo "you want to make multiplication"
+        ;;
+    '/' )
+        echo "you want to make division"
+        ;;
+    * )
+        echo "invalid operator '$oper'" >&2
+        exit 1
+esac
+
+echo "first number"
+read num1
+echo "second number"
+read num2
+
+expr "$num1" "$oper" "$num2"
+
+exit 0
+
+*******************************end****************************************
+
+*************************end of Scripts**************************
