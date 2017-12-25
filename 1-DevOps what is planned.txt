@@ -11,10 +11,10 @@ Continuous Monitoring using Nagios
 
 Servers list
 ===========
-gitlab-server  - Done
-gitlab-client  - Done
-jenkins-server - In Progress
-tomcat-server
+gitlab-server  
+gitlab-client  
+jenkins-server 
+tomcat-server  
 docker-server
 puppet-server
 puppet-client
