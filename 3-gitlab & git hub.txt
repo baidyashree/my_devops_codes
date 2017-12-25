@@ -15,8 +15,8 @@ apt-get install gitlab-ce -y
 update ip address in ---> /etc/gitlab/gitlab.rb => like external_url 'http://192.168.0.2'
 
 gitlab-ctl reconfigure
-gitlabl-ctl stop 
-gitlabl-ctl start
+gitlab-ctl stop 
+gitlab-ctl start
 
 check in brower: 192.168.0.2
 root/gitlab123
