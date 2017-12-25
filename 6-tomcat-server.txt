@@ -1,0 +1,93 @@
+Setup tomcat server
+=======================
+1) apt-get update -y
+
+2) apt-get install default-jdk -y
+
+3) create dir /opt/tomcat/ 
+mkdir /opt/tomcat
+
+4) create tomcat group:
+groupadd tomcat
+useradd -s /bin/false -g tomcat -d /opt/tomcat/ tomcat
+
+5) in the browser download apache-tomcat 8.5.5.tar.zip and unzip at /opt/tomcat/
+(or)
+cd /tmp
+wget https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.5/bin/apache-tomcat-8.5.5.tar.gz
+
+6) cd /opt/tomcat/
+tar xvzf  /tmp/apache-tomcat-8.5.5.tar.gz  --strip-components=1
+
+5)Set the following permission, and these permission are required to perform tomcat correctly.
+cd /opt
+chgrp -R tomcat tomcat
+chown -R tomcat tomcat
+chmod -R g+r conf
+
+7) to start tomcat automatically, create /etc/systemd/system/tomcat.service file and add following entry:
+https://serverfault.com/questions/764741/tomcat-service-does-not-see-java-home
+
+
+root@tomcat-server:~# cat /etc/systemd/system/tomcat.service
+
+[Unit]
+Description=Apache Tomcat Web Application Container
+After=network.target
+
+[Service]
+Type=forking
+
+Environment=JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre
+Environment=CATALINA_PID=/opt/tomcat/temp/tomcat.pid
+Environment=CATALINA_HOME=/opt/tomcat
+Environment=CATALINA_BASE=/opt/tomcat
+Environment='CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC'
+Environment='JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom'
+
+ExecStart=/opt/tomcat/bin/startup.sh
+ExecStop=/opt/tomcat/bin/shutdown.sh
+
+User=tomcat
+Group=tomcat
+UMask=0007
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+root@tomcat-server:~#
+
+7) to start tomcat :
+systemctl daemon-reload
+systemctl stop tomcat
+systemctl start tomcat
+
+systemctl status tomcat //to check the status of the tomcat.
+systemctl enable tomcat ==> to start at the boot time...    
+Created symlink from /etc/systemd/system/multi-user.target.wants/tomcat.service to /etc/systemd/system/tomcat.service.
+
+8) tomcat URL: <IP>:8080
+
+10) After installation of tomcat, copy addressbook.war file from jenkins machine /var/lib/jenkins/workspace/005-create-war-file/target/addressbook.war to /opt/tomcat/webapps/addressbook.war
+
+scp root@<jenkinsip> /var/lib/jenkins/workspace/005-create-war-file/target/addressbook.war /opt/tomcat/webapps
+
+11) Stop and start tomcat and check in browser...
+<ip>:8080/addressbook
+
+Example: 
+on tomcat machine:
+cd /opt/tomcat/webapps
+scp 192.168.0.91:/var/lib/jenkins/workspace/005-create-war-file/target/addressbook.war .
+
+
+12) Modify following line in addressbookUI.java and run build pipeline and check changes appears in tomcat server webpage.
+===========================================================================================================================
+./src/main/java/com/edurekademo/tutorial/addressbook/AddressbookUI.java:        filter.setInputPrompt("I changed this after adding a remove build to check if its getting propagated across the pipeline.");
+
+"This is Appar and I am testing after tomcat integration on <date and time>."
+
+
+
+*********************************************************************************************

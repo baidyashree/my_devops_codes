@@ -1,0 +1,22 @@
+Topics Planned
+===============
+Linux Fundamentals - Completed
+Git Lab  - Completed
+Jenkins  (CICD) - In Progress
+Build and Test Automation 
+Containerization using Docker 
+Puppet - Infrastructure as Code
+Continuous Monitoring using Nagios 
+
+
+Servers list
+===========
+gitlab-server  - Done
+gitlab-client  - Done
+jenkins-server - In Progress
+tomcat-server
+docker-server
+puppet-server
+puppet-client
+nagios-server
+nagios-client

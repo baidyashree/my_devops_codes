@@ -1,0 +1,123 @@
+
+Module2: Git Server Setup
+=========================
+apt-get update -y
+apt-get install curl openssh-server ca-certificates
+apt autoremove -y
+
+curl -s https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
+
+cat  /etc/apt/sources.list.d/gitlab_gitlab-ce.list --> gitlab configuration file location 
+
+apt-get install gitlab-ce -y 
+-> gitlab installed at /opt/gitlab (approx 1.4gb)
+
+update ip address in ---> /etc/gitlab/gitlab.rb => like external_url 'http://192.168.0.2'
+
+gitlab-ctl reconfigure
+gitlabl-ctl stop 
+gitlabl-ctl start
+
+check in brower: 192.168.0.2
+root/gitlab123
+add user
+create project
+-------------------
+Note:
+In case problem: 
+rm /var/opt/gitlab/postgresql/data/postmaster.pid
+gitlab-ctl stop 
+gitlab-ctl start
+
+************************************
+github commands:
+================
+1) git clone URL ( example: git@192.168.88.151/root/addressbook.git
+2) touch test1 test2 test3 test4
+3) git status
+4) git add .
+5) git commit -m " Initial Commit"
+6) git remote -v
+7) git push -u origin master
+
+
+************
+git add . 
+git commit -m " changes" 
+git push 
+git pull
+************
+
+
+
+*****************************************************************
+
+how to we merge
+================
+now modify test1 file, and check in. 
+
+1) remove myfirstproject on linux m/x and recreate,
+
+git clone git@192.168.0.17:root/myfirstproject.git
+
+2) cd myfirstproject/
+git status
+git branch
+git checkout dev
+vi test1 
+add some input...
+git status
+git diff 
+
+3) git add .
+git commit -a -m " modifed test1 file"
+git push
+check and browser at localbranch
+
+3) you have tested and manager approved the changes, now merge the changes to master branch,
+git checkout master 
+git merge dev 
+git push
+
+4) check in browser at master branch
+
+
+Merge conflicts
+================
+1) git checkout dev
+2) vi test1 
+modify 1st line
+3) in the browser also modify 1st line and commit..
+4) git add .
+5) git commit -a -m "test1 1st  line change"
+6) git push
+should through following error,
+To git@192.168.0.17:root/myfirstproject.git
+ ! [rejected]        dev -> dev (fetch first)
+7) git pull
+8) vim test1 and resolve the conflicts
+10)git add .
+git commit -a -m "test1 1st  line change"
+git push
+
+11) check the new changes in the browser
+
+*******************************************************************
+git stash ( common scnario)
+===========================
+In case you are working in master branch and in the middile of the project manager you to fix some urgent issues in production 
+branch.. you can say no.. but how to you save the master branch work and move it to production branch.
+
+1) git checkout master
+2) vi test2
+egjgefsej
+
+3) git stash
+
+4) git diff;git test2 => it should not show changes..
+
+5) now production issue fixed..
+
+6) git stash apply
+
+*****************************   The End ******************************
