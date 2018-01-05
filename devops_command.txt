@@ -1,0 +1,1786 @@
+Topics Planned
+===============
+Linux Fundamentals - Completed
+Git Lab  - Completed
+Jenkins  (CICD) - In Progress
+Build and Test Automation 
+Containerization using Docker 
+Puppet - Infrastructure as Code
+Continuous Monitoring using Nagios 
+
+Thu -> docker, pupper
+Friday -> Puppet
+Tuesday -> PuppetWed -? Ec2,S3
+Thursday -> EBS
+Fri -> Cloud Watch, 
+
+DevOps S/w Versions:
+====================
+git -> 2.14.2
+jenkins -> 2.73.1
+tomcat -> 8.5.23
+docker -> 17.6.2
+puppet -> 5.3
+nagios -> 4.3.4
+chef -> 12.18.14
+ansible -> 2.0.0.2
+
+IBM DevOPs Interview Question:
+==========================
+1) how to make variable constant (readonly) in shells script
+2) how to find how long system is up ( uptime -p) or top
+3) how to find difference bet files...
+4) when new person joins, what is the process for him to work on git project?
+5) what is push request in git?
+6) what is docker file/ how it works?
+7) What are package you use for devops pipeline?
+8) What port used for ssh?
+9) what port nagios uses? (snmp)
+10) what is difference between chmod and chown
+11) How to see the file which has continutes updates ex. log files.. 
+Ans: tail -f <filename>
+12) What is regx?
+13) Can the developer work on master branch?
+14) what ## and #! in shells script.
+The ## operator is used to remove any leading string that matches the pattern */. * is a wildcard character so */ means "any string followed by a forward slash".
+
+#! - Shebang
+#! defines the starting of the script execution. It helps in choosing the correct shell, so that some of the commands incompatible to a particular shell don’t fail.
+
+15) 
+$# holds number of arguments specified on command line. and $* or $@ refer to all
+arguments in passed to script. 
+
+$? expands to the exit status of the most recently executed foreground pipeline
+un_some_command
+EXIT_STATUS=$?
+
+if [ "$EXIT_STATUS" -eq "0" ]
+then
+    # Do work when command exists on success
+else
+    # Do work for when command has a failure exit
+fi
+
+16) shell doesn't understand $10 , $11 , etc. It treats $10 as if it were ${1}0 . But it does understand ${10} , ${11} 
+
+17) how to you get the list of email ids from a file
+18) how to do you get list of websites from a file
+
+Numerical permissions
+# 	Permission 	rwx
+7 	read, write and execute 	rwx
+6 	read and write 	rw-
+5 	read and execute 	r-x
+4 	read only 	r--
+3 	write and execute 	-wx
+2 	write only 	-w-
+1 	execute only 	--x
+0 	none 	---
+
+19) There are three types of quotes
+" i.e. Double Quotes
+' i.e. Single quotes
+` i.e. Back quote
+1."Double Quotes" - Anything enclose in double quotes removed meaning of that characters (except
+\ and $).
+2. 'Single quotes' - Enclosed in single quotes remains unchanged.
+3. `Back quote` - To execute command.
+For eg.
+$ echo "Today is date"
+Can't print message with today's date.
+$ echo "Today is `date`".
+Now it will print today's date as, Today is Tue Jan ....,See the `date` statement uses back quote
+
+20) 
+
+
+
+Servers list
+===========
+gitlab-server  - Done
+gitlab-client  - Done
+jenkins-server - done
+tomcat-server - done
+docker-server - In progress
+puppet-server
+puppet-client
+nagios-server
+nagios-client
+
+
+Module 1: Linux
+================
+Bash scripts
+=============
+Bash scripts
+=============
+1) which bash
+
+2)File : hello_world.sh 
+
+#!/bin/bash
+# declare STRING variable
+STRING="Hello World"
+#print variable on a screen
+echo $STRING
+
+3) backup.sh
+#!/bin/bash
+tar -czf myhome_directory.tar.gz /home/linuxconfig
+
+4) variables.sh
+#!/bin/bash
+#Define bash global variable
+#This variable is global and can be used anywhere in this bash script
+VAR="global variable"
+function bash {
+#Define bash local variable
+#This variable is local to bash function only
+local VAR="local variable"
+echo $VAR
+}
+echo $VAR
+bash
+# Note the bash global variable did not change
+# "local" is bash reserved word
+echo $VAR
+
+5) arguments.sh
+#!/bin/bash
+# use predefined variables to access passed arguments
+#echo arguments to the shell
+echo $1 $2 $3
+n1=$1
+n2=$2
+echo `expr ans=$((n1+n2))`
+
+6) backtick.sh
+#!/bin/bash
+# use backticks " ` ` " to execute shell command
+echo `uname -o`
+# executing bash command without backticks
+echo uname -o 
+
+
+7)read.sh
+#!/bin/bash
+ 
+echo -e "Hi, please type the word: \c "
+read  word
+echo "The word you entered is: $word"
+echo -e "Can you please enter two words? "
+read word1 word2
+echo "Here is your input: \"$word1\" \"$word2\""
+echo -e "How do you feel about bash scripting? "
+# read command now stores a reply into the default build-in variable $REPLY
+read
+echo "You said $REPLY, I'm glad to hear that! "
+echo -e "What are your favorite colours ? "
+# -a makes read command to read into an array
+read -a colours
+echo "My favorite colours are also ${colours[0]}, ${colours[1]} and ${colours[2]}:-)" 
+
+8) bashtrap.sh
+#!/bin/bash
+# bash trap command
+trap bashtrap INT
+# bash clear screen command
+clear;
+# bash trap function is executed when CTRL-C is pressed:
+# bash prints message => Executing bash trap subrutine !
+bashtrap()
+{
+    echo "CTRL+C Detected !...executing bash trap !"
+}
+# for loop from 1/10 to 10/10
+for a in `seq 1 10`; do
+    echo "$a/10 to Exit." 
+    sleep 1;
+done
+echo "Exit Bash Trap Example!!!" 
+
+9) arrays.sh
+#!/bin/bash
+#Declare array with 4 elements
+ARRAY=( 'Debian Linux' 'Redhat Linux' Ubuntu Linux )
+# get number of elements in the array
+ELEMENTS=${#ARRAY[@]}
+
+# echo each element in array 
+# for loop
+for (( i=0;i<$ELEMENTS;i++)); do
+    echo ${ARRAY[${i}]}
+done  
+
+
+10) bash_if_else.sh
+#!/bin/bash
+directory="./BashScripting"
+
+# bash check if directory exists
+if [ -d $directory ]; then
+	echo "Directory exists"
+else 
+	echo "Directory does not exists"
+fi 
+
+11) nested_if_else.sh
+#!/bin/bash
+ 
+# Declare variable choice and assign value 4
+choice=4
+# Print to stdout
+ echo "1. Bash"
+ echo "2. Scripting"
+ echo "3. Tutorial"
+ echo -n "Please choose a word [1,2 or 3]? "
+# Loop while the variable choice is equal 4
+# bash while loop
+while [ $choice -eq 4 ]; do
+ 
+# read user input
+read choice
+# bash nested if/else
+if [ $choice -eq 1 ] ; then
+ 
+        echo "You have chosen word: Bash"
+
+else                   
+
+        if [ $choice -eq 2 ] ; then
+                 echo "You have chosen word: Scripting"
+        else
+         
+                if [ $choice -eq 3 ] ; then
+                        echo "You have chosen word: Tutorial"
+                else
+                        echo "Please make a choice between 1-3 !"
+                        echo "1. Bash"
+                        echo "2. Scripting"
+                        echo "3. Tutorial"
+                        echo -n "Please choose a word [1,2 or 3]? "
+                        choice=4
+                fi   
+        fi
+fi
+done 
+
+12) statement.sh
+#!/bin/bash
+# declare integers
+NUM1=2
+NUM2=2
+if [ $NUM1 -eq $NUM2 ]; then
+	echo "Both Values are equal"
+else 
+	echo "Values are NOT equal"
+fi 
+
+13) 
+#!/bin/bash
+# declare integers
+NUM1=2
+NUM2=1
+if   [ $NUM1 -eq $NUM2 ]; then
+	echo "Both Values are equal"
+elif [ $NUM1 -gt $NUM2 ]; then
+	echo "NUM1 is greater then NUM2"
+else 
+	echo "NUM2 is greater then NUM1"
+fi 
+
+14) stringcomp.sh
+#!/bin/bash
+#Declare string S1
+S1="Bash"
+#Declare string S2
+S2="Scripting"
+if [ $S1 = $S2 ]; then
+	echo "Both Strings are equal"
+else 
+	echo "Strings are NOT equal"
+fi   
+
+15) fileexit.sh
+#!/bin/bash
+file="./file"
+if [ -e $file ]; then
+	echo "File exists"
+else 
+	echo "File does not exists"
+fi 
+
+16) for_loop.sh
+
+#!/bin/bash
+
+# bash for loop
+for f in $( ls /var/ ); do
+	echo $f
+done 
+
+17) while_loop.sh
+#!/bin/bash
+COUNT=6
+# bash while loop
+while [ $COUNT -gt 0 ]; do
+	echo Value of count is: $COUNT
+	let COUNT=COUNT-1
+done 
+
+18) until_loop.sh
+#!/bin/bash
+COUNT=0
+# bash until loop
+until [ $COUNT -gt 5 ]; do
+        echo Value of count is: $COUNT
+        let COUNT=COUNT+1
+done 
+
+19) function.sh
+
+!/bin/bash
+# BASH FUNCTIONS CAN BE DECLARED IN ANY ORDER
+function function_B {
+        echo Function B.
+}
+function function_A {
+        echo $1
+}
+function function_D {
+        echo Function D.
+}
+function function_C {
+        echo $1
+}
+# FUNCTION CALLS
+# Pass parameter to function A
+function_A "Function A."
+function_B
+# Pass parameter to function C
+function_C "Function C."
+function_D 
+
+20) select.sh
+#!/bin/bash
+ 
+PS3='Choose one word: ' 
+
+# bash select
+select word in "linux" "bash" "scripting" "tutorial" 
+do
+  echo "The word you have selected is: $word"
+# Break, otherwise endless loop
+  break  
+done
+
+exit 0 
+
+21) case.sh
+#!/bin/bash
+echo "What is your preferred programming / scripting language"
+echo "1) bash"
+echo "2) perl"
+echo "3) phyton"
+echo "4) c++"
+echo "5) I do not know !"
+read case;
+#simple case bash structure
+# note in this case $case is variable and does not have to
+# be named case this is just an example
+case $case in
+    1) echo "You selected bash";;
+    2) echo "You selected perl";;
+    3) echo "You selected phyton";;
+    4) echo "You selected c++";;
+    5) exit
+esac 
+
+22) add.sh
+#!/bin/bash
+ 
+let RESULT1=$1+$2
+echo $1+$2=$RESULT1 ' -> # let RESULT1=$1+$2'
+declare -i RESULT2
+RESULT2=$1+$2
+echo $1+$2=$RESULT2 ' -> # declare -i RESULT2; RESULT2=$1+$2'
+echo $1+$2=$(($1 + $2)) ' -> # $(($1 + $2))' 
+
+
+
+24) calc_with_case.sh 
+
+clear
+sum=0
+echo " Enter one no."
+read n1
+echo "Enter second no."
+read n2
+
+echo "1.Addition"
+echo "2.Subtraction"
+echo "3.Multiplication"
+echo "4.Division"
+
+echo "Enter your choice"
+read ch
+
+case $ch in
+1)sum=`expr $n1 + $n2`
+   echo "Sum ="$sum;;
+
+2)sum=`expr $n1 - $n2`
+   echo "Sub = "$sum;;
+
+3)sum=`expr $n1 \* $n2`
+   echo "Mul = "$sum;;
+
+4)sum=`expr $n1 / $n2`
+    echo "Div = "$sum;;
+
+*)echo "Invalid choice";;
+esac
+
+23) calc_with switch
+
+echo "Enter Your Choise : "
+echo "1.Addition"
+echo "2.Substtaction"
+echo "3.Multiplication"
+echo "4.Division"
+read opr
+echo "Enter first Number : "
+read n1
+echo "Enter second Number : "
+read n2
+
+if [ $opr = 1 ]; then
+  echo `expr ans=$((n1+n2))`
+elif [ $opr = 2 ]; then
+  echo `expr ans=$((n1-n2))`
+elif [ $opr = 3 ]; then
+  echo `expr ans=$((n1*n2))`
+elif [ $opr = 4 ]; then
+  echo `expr ans=$((n1/n2))`
+else
+  echo "Please try again from given options only."
+fi
+
+
+another way,
+Calc program: 
+=============
+#!/bin/bash
+
+echo "choose the operator"
+read oper
+
+case $oper in
+    '+' )
+        echo "you want to make addition"
+        ;;
+    '-' )
+        echo "you want to make subtraction"
+        ;;
+    '*' )
+        echo "you want to make multiplication"
+        ;;
+    '/' )
+        echo "you want to make division"
+        ;;
+    * )
+        echo "invalid operator '$oper'" >&2
+        exit 1
+esac
+
+echo "first number"
+read num1
+echo "second number"
+read num2
+
+expr "$num1" "$oper" "$num2"
+
+exit 0
+
+*******************************end****************************************
+
+*************************end of Scripts**************************
+
+Module2: Git Server Setup
+=========================
+apt-get update -y
+apt-get install curl openssh-server ca-certificates
+apt autoremove -y
+curl -s https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
+cat  /etc/apt/sources.list.d/gitlab_gitlab-ce.list --> gitlab configuration file location 
+apt-get install gitlab-ce -y 
+-> gitlab installed at /opt/gitlab (approx 1.4gb)
+update ip address in ---> /etc/gitlab/gitlab.rb => like external_url 'http://192.168.0.2'
+gitlab-ctl reconfigure
+gitlabl-ctl stop 
+gitlabl-ctl start
+
+check in brower: 192.168.0.2
+root/gitlab123
+add user
+create project
+-------------------
+Note:
+In case problem: 
+rm /var/opt/gitlab/postgresql/data/postmaster.pid
+gitlab-ctl stop 
+gitlab-ctl start
+
+************************************
+github commands:
+================
+1) git clone URL ( example: git@192.168.88.151/root/addressbook.git
+2) touch test1 test2 test3 test4
+3) git status
+4) git add .
+5) git commit -m " Initial Commit"
+6) git remote -v
+7) git push -u origin master
+
+
+************
+git add . 
+git commit -m " changes" 
+git push 
+git pull
+************
+
+
+
+*****************************************************************
+
+how to we merge
+================
+now modify test1 file, and check in. 
+
+1) remove myfirstproject on linux m/x and recreate,
+
+git clone git@192.168.0.17:root/myfirstproject.git
+
+2) cd myfirstproject/
+git status
+git branch
+git checkout dev
+vi test1 
+add some input...
+git status
+git diff 
+
+3) git add .
+git commit -a -m " modifed test1 file"
+git push
+check and browser at localbranch
+
+3) you have tested and manager approved the changes, now merge the changes to master branch,
+git checkout master 
+git merge dev 
+git push
+
+4) check in browser at master branch
+
+
+Merge conflicts
+================
+1) git checkout dev
+2) vi test1 
+modify 1st line
+3) in the browser also modify 1st line and commit..
+4) git add .
+5) git commit -a -m "test1 1st  line change"
+6) git push
+should through following error,
+To git@192.168.0.17:root/myfirstproject.git
+ ! [rejected]        dev -> dev (fetch first)
+7) git pull
+8) vim test1 and resolve the conflicts
+10)git add .
+git commit -a -m "test1 1st  line change"
+git push
+
+11) check the new changes in the browser
+
+*******************************************************************
+git stash ( common scnario)
+===========================
+In case you are working in master branch and in the middile of the project manager you to fix some urgent issues in production 
+branch.. you can say no.. but how to you save the master branch work and move it to production branch.
+
+1) git checkout master
+2) vi test2
+egjgefsej
+
+3) git stash
+
+4) git diff;git test2 => it should not show changes..
+
+5) now production issue fixed..
+
+6) git stash apply
+
+
+Module 3: Jenkins lab setup
+============================
+https://pkg.jenkins.io/debian/ -> URL for Jenkins installation steps
+
+1) apt-get update -y 
+
+
+2) install security to avoid virous:
+
+wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
+
+(or)
+wget  https://pkg.jenkins.io/debian/jenkins.io.key 
+apt-key add jenkins.io.key
+
+3) vi /etc/apt/sources.list
+#create jenkins.list with following content
+#dep for remote repository
+deb http://pkg.jenkins.io/debian-stable binary/ 
+
+4) apt-get update -y => update cache once again
+
+5) check url ok? 
+apt-cache search jenkins | grep jenkins
+
+6) install jenkins:
+apt-get install jenkins -y
+
+7) go to browser of jenkins server
+http://192.168.0.14:8080
+
+8) copy:  for the security purpose...
+root@jenkins-server:/etc/apt/sources.list.d# cat /var/lib/jenkins/secrets/initialAdminPassword
+c4d82994af764378bf47c353afd24c2b
+
+9) select "installl suggested plug in" option
+
+
+10) create first admin user,
+root/redhat
+
+11) start using jenkins
+
+12) to create regular user...in configure global security:
+enable ( or select) allow user to sign up ( security relim)
+
+
+13) logoutand create readonly user at the front end...
+
+logout as root and in the create user link create just read only user like
+testuser/testuser/TestUser/test@test.com
+
+14) Create more user if required
+
+*******************************
+optional steps ( if console is not working)
+15) service jenkins restart
+16) sudo /etc/init.d/jenkins restart => to restart jenkins
+
+******************************
+
+17) give root adminstrative permission and testuser read only in configure global security
+
+ login as root and manage jenkins, configure global security
+ Matrix-based security 
+ add  root user and testuser and set...
+ root -> admin previlages ( over all permission)
+ testuser > readonly ( Over all permission) and in job option read permission
+
+
+now login as testuser and check manage jenkins is not avaiaible...
+ 
+ 
+18) login as root user and create new job
+	1) MyFirstDevOps as free style project ....
+
+	2) manage jenkins and global tool configuration, add JDK
+	JDK name -> java
+	SE development kit 8u144
+
+	I agree and put your oracle credential( if not there sign up...
+
+	3) install maven ( build tool for java application)
+	add mavem ( globl tool config)
+	Maven
+
+	4) git already there is the machine...
+
+19) Build the project "MyFirstDevOps"
+	
+19) install plug ins @ manage jenkins => manager plugins
+
+
+Job ( Project)   -> jenkins pkg
+===============================
+Developer compile -> NA
+Developer code review -> PMD ( programming Mistake deducter) 
+QA Unit test -> junit
+QA Metric check ( Code Coverage) -> cobortura
+QA packing -> WAR build pkg
+Deploy -> NA 
+
+following plugins needs to be installed
+=======================================
+1) Build Pipe Line Plugin search from availble -> install without restart ("Build Pipeline Plugin")
+2) PMD Plug-in ("PMD Plug-in")
+3) Cobertura Plugin ("Cobertura Plugin")
+4) HTML publisher plug in ("HTML Publisher plugin")
+5) junit -> already must have installed..("JUnit Plugin")
+
+Final list of pkgs -> jdk, maven ( it will have war build as well), junit, build Piepline, PMD, Corbortura,HTML Publisher, JUnit
+
+20) create dummy following projects first
+		001-checkout-code
+		002-check-code-error
+		003-junit-testing
+		004-code-coverage-testing
+		005-generate-war-file
+		006-deploy-to-tomcat
+		007-deploy-to-docker
+		008-deploy-to-puppet
+
+22) connect projects..
+build another project  
+001 -> 002 -> 003 -> 004 ->005 -> 006 ->007 -> 008
+
+23) create pipe line ( at + )... name like "Devops-Delivery-Pipleline"
+	and select initial job 001
+	
+24) do dry-run on the piple line build
+
+*************************************************************************************************
+
+Package requirment
+==================
+Task				Pkg
+Develop Compile		NR
+Code-coverage 		PMD( Programming Mistake dedcuter)
+QA-Unit-Test 		JUnit
+Code-Coverage-test	Corbertura
+QA Pkging			WAR build pkg
+Deploy 				NA
+
+
+pipe line
+=========
+001-checkout-code
+002-check-code-error
+003-junit-testing
+004-code-coverage-testing
+005-generate-war-file
+006-deploy-to-tomcat
+007-deploy-to-docker
+008-deploy-to-puppet
+
+*******************************************
+Project 1:
+===========
+
+Step1: 001-checkout-code
+config: source code git
+post-build: 
+02-check-code-error
+
+
+Project 2
+==========
+Step2: 002-check-code-error
+config: git source code
+build: 
+Invoke top-level Maven targets
+Maven Version : Maven
+Goals: -P metrics pmd:pmd
+
+Post Build Action:
+publish pmd analysis result
+ **/*.xml
+Projects to build:
+003-junit-testing
+
+
+
+
+003-junit-testing project configiguration 
+===========================================
+Source Code: /src/test/java/com/edureka/utilities/
+
+Step3:
+003-junit-testing
+source code git
+Invoke top level maven targets
+Maven Version :Maven
+goal : test
+
+post build action:
+publish junit test result:
+**/*.xml
+Project to build: 004-code-coverage-testing
+
+004-code-coverage-testing - project configuration
+==================================================
+Step4:004-code-coverage-testing
+source code : git
+invoke top level maven target :
+Maven 
+cobertura:cobertura
+
+Publish HTLP report:
+HTMP dir to archive: target/site/cobertura
+Index pages: index.html
+Report title: HTML report
+
+Note: Download HTML_report.zip file and unzip the same open index.html in the brower for the detailed report.
+code with colored are covered
+
+
+
+005-generate-war-file project configuration - i.e create artifacts
+===================================================================
+Step5: 005-generate-war-file
+Source -> git
+Invoke top label Maven target
+Maven version:Maven 
+Goal: package
+post build action : Archive Artifacts
+**/target/addressbook.war
+
+Project to build: 006-deploy-to-tomcat
+
+addressbook.war => 15.77MB size..this will be used till the end of the project...
+
+************************************************************
+
+
+
+31) Setup tomcat server
+=======================
+1) apt-get update -y
+2) apt-get install default-jdk -y
+3) create tomcat group:
+groupadd tomcat
+useradd -s /bin/false -g tomcat -d /opt/tomcat/ tomcat
+4) create dir /opt/tomcat/ 
+mkdir /opt/tomcat
+5) in the browser download apache-tomcat 8.5.5.tar.zip and unzip at /opt/tomcat/
+(or)
+cd /tmp
+wget https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.5/bin/apache-tomcat-8.5.5.tar.gz
+
+6) cd /opt/tomcat/
+tar xvzf  /tmp/apache-tomcat-8.5.5.tar.gz  --strip-components=1
+
+5)Set the following permission, and these permission are required to perform tomcat correctly.
+cd /opt
+chgrp -R tomcat tomcat
+chown -R tomcat tomcat
+chmod -R g+r conf
+
+7) to start tomcat automatically, create /etc/systemd/system/tomcat.service file and add following entry:
+https://serverfault.com/questions/764741/tomcat-service-does-not-see-java-home
+
+
+root@tomcat-server:~# cat /etc/systemd/system/tomcat.servicecd
+
+[Unit]
+Description=Apache Tomcat Web Application Container
+After=network.target
+
+[Service]
+Type=forking
+
+Environment=JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre
+Environment=CATALINA_PID=/opt/tomcat/temp/tomcat.pid
+Environment=CATALINA_HOME=/opt/tomcat
+Environment=CATALINA_BASE=/opt/tomcat
+Environment='CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC'
+Environment='JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom'
+
+ExecStart=/opt/tomcat/bin/startup.sh
+ExecStop=/opt/tomcat/bin/shutdown.sh
+
+User=tomcat
+Group=tomcat
+UMask=0007
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+root@tomcat-server:~#
+
+7) to start tomcat :
+systemctl daemon-reload
+systemctl stop tomcat
+systemctl start tomcat
+
+systemctl status tomcat //to check the status of the tomcat.
+systemctl enable tomcat ==> to start at the boot time...
+
+
+8) tomcat URL: <IP>:8080
+
+10) After installation of tomcat, copy addressbook.war file from jenkins machine /var/lib/jenkins/workspace/005-create-war-file/target/addressbook.war to /opt/tomcat/webapps/addressbook.war
+
+scp root@<jenkinsip> /var/lib/jenkins/workspace/005-create-war-file/target/addressbook.war /opt/tomcat/webapps
+
+11) Stop and start tomcat and check in browser...
+<ip>:8080/addressbook
+
+Example: 
+on tomcat machine:
+cd /opt/tomcat/webapps
+scp 192.168.0.91:/var/lib/jenkins/workspace/005-create-war-file/target/addressbook.war .
+
+
+12) Modify following line in addressbookUI.java and run build pipeline and check changes appears in tomcat server webpage.
+===========================================================================================================================
+./src/main/java/com/edurekademo/tutorial/addressbook/AddressbookUI.java:        filter.setInputPrompt("I changed this after adding a remove build to check if its getting propagated across the pipeline.");
+
+"This is Appar and I am testing after tomcat integration on <date and time>."
+
+
+
+*********************************************************************************************
+
+tomcat deployment automation
+============================
+ansible - remote deployment tool : install ansible in jenkins machine
+===========================================================================
+jenkins-server ansible installation
+=====================================
+1) apt-get update -y; apt-add-repository ppa:ansible/ansible
+2) apt-get update ==> update the cache after adding repository
+3) apt-get install ansible -y
+4) ansible --version
+5) export EDITOR=vim
+6) visudo 
+
+#
+# This file MUST be edited with the 'visudo' command as root.
+#
+# Please consider adding local content in /etc/sudoers.d/ instead of
+# directly modifying this file.
+#
+# See the man page for details on how to write a sudoers file.
+#
+Defaults        env_reset
+Defaults        mail_badpass
+Defaults        secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+
+# Host alias specification
+
+# User alias specification
+
+# Cmnd alias specification
+
+# User privilege specification
+root    ALL=(ALL:ALL) ALL
+jenkins ALL=(ALL:ALL) NOPASSWD:ALL   ==> only this line needs to be added. all jenkins user has sudo access and passwordless connectivity.
+
+# Members of the admin group may gain root privileges
+%admin ALL=(ALL) ALL
+
+# Allow members of group sudo to execute any command
+%sudo   ALL=(ALL:ALL) ALL
+
+# See sudoers(5) for more information on "#include" directives:
+
+#includedir /etc/sudoers.d
+
+7)vim /etc/ansible/hosts 
+delete old entry and recreate as following.. first add tomcat alone.. 
+
+[local]
+127.0.0.1 anisible_ssh_user=root ansible_ssh_pass=redhat
+[tomcat-server]
+192.168.0.4 anisible_ssh_user=root ansible_ssh_pass=redhat
+
+Following can be added later
+============================
+[docker-server]
+192.168.0.9 anisible_ssh_user=root ansible_ssh_pass=redhat
+[puppet-server]
+192.168.0.8 anisible_ssh_user=root ansible_ssh_pass=redhat
+[puppet-client]
+192.168.0.10 anisible_ssh_user=root ansible_ssh_pass=redhat
+
+8) vim /etc/ansible/ansible.cfg
+uncomment following line,
+# uncomment this to disable SSH key host checking
+host_key_checking = False   => disable to hosy_key checking.. then only ansible will work... by default its enabled..
+
+9) ansible all -m ping 
+
+10) add jenkins-server name in /etc/hosts as well, as follows:
+root@jenkins-server:~# cat /etc/hosts
+127.0.0.1       localhost
+127.0.1.1       jenkins-server
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+root@jenkins-server:~#
+
+33) 006-deploy-to-tomcat project configuration:
+===============================================
+Step6: 006-deploy-to-tomcat
+Build excute shell:
+sudo ansible tomcat-server -m shell -a "rm -rfv /opt/tomcat/webapps/addressbook.war"
+sudo ansible local -m shell -a "cp /var/lib/jenkins/workspace/005-create-war-file/target/addressbook.war /opt/"
+sudo ansible tomcat-server -m copy -a "src=/opt/addressbook.war dest=/opt/tomcat/webapps/"
+sudo ansible tomcat-server -m shell -a "systemctl stop tomcat.service"
+sudo ansible tomcat-server -m shell -a "systemctl start tomcat.service"
+
+note:
+shell, copy are ansible module...local mean local server, tomcat-server -> remote m/c
+copy/shell modules should have -a flag.
+-m -> for module
+
+ 
+34) Modify following line in addressbookUI.java and run build pipeline and check changes appears in tomcat server webpage.
+======================================================
+./src/main/java/com/edurekademo/tutorial/addressbook/AddressbookUI.java:        filter.setInputPrompt("I changed this after adding a remove build to check if its getting propagated across the pipeline.");
+
+"This is Appar and I am testing after tomcat integration on <date and time>."
+
+**************************************************************************
+
+DOCKER-SEVER INSTALLATION AND CONFIGURATION
+============================================
+
+36) install docker community-open source edition
+=================================================
+(https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/#install-from-a-package)
+
+0) apt-get update -y
+1) // secure download
+apt-get install apt-transport-https ca-certificates curl software-properties-common -y 
+2)//download key  and add
+wget https://download.docker.com/linux/ubuntu/gpg
+check with "cat gpg" for the Key content. ( Optional) 
+apt-key add gpg
+
+3) find out the release
+root@ubuntu:~# lsb_release -cs
+xenial
+root@ubuntu:~#
+
+4) //add repository
+vi /etc/apt/sources.list
+add the following at the end of the file,
+
+deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+
+5) apt-get update -y 
+
+6) apt-get install docker-ce -y  //install docker community edition
+
+7) docker --version
+
+root@docker-server:~# docker --version
+Docker version 17.09.1-ce, build 19e2cf6
+root@docker-server:~#
+
+8) sign up explore various images ( like redis, ubundu, ruby, phython..) on dockerhub...
+https://hub.docker.com
+
+9) docker health check
+#docker run hello-world
+
+check following message appears in output, then docker is working fine,
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+
+10) pull some standard images from remote docker hub, some of these are popular images.
+=======================================================================================
+docker pull ubuntu
+docker pull fedora
+docker pull debian
+docker pull centos
+
+11)  list of containers in the box
+docker images
+
+12) let us run some containers
+===============================
+docker run -ti ubuntu  // ti--> run it in terminal and interactive mode
+
+----------------
+root@docker-server:~# docker run -ti ubuntu /bin/bash
+root@86599f34c664:/#
+
+root@86599f34c664:/#  ==> this is prompt inside the container.
+------------------
+
+13) 
+on docker image: 918 free 
+
+root@86599f34c664:/# free -m
+              total        used        free      shared  buff/cache   available
+Mem:           1999         109         918           3         971        1693
+Swap:          1023           0        1023
+root@86599f34c664:/#
+
+open one more putty connection to hosting hose, and check free image, here also 918 is free..
+root@docker-server:~# free -m
+              total        used        free      shared  buff/cache   available
+Mem:           1999         109         918           3         971        1693
+Swap:          1023           0        1023
+root@docker-server:~#
+
+
+also try top on both machine... it shows that container has full access to base machine..
+its like shared resource things.. use the memory as required..
+
+KiB Mem :  2047868 total,   941960 free,   110852 used,   995056 buff/cache
+KiB Swap:  1048572 total,  1048572 free,        0 used.  1735836 avail Mem
+
+14) to check list of containers running,
+docker ps -a  or docker ps // this is only for currently running docker.
+
+root@docker-server:~# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
+86599f34c664        ubuntu              "/bin/bash"         9 minutes ago       Up 9 minutes                                    jovial_ramanujan
+9bd393516eaf        ubuntu              "/bin/bash"         9 minutes ago       Exited (0) 9 minutes ago                        nifty_boyd
+76dd46890ccd        hello-world         "/hello"            28 minutes ago      Exited (0) 28 minutes ago                       sharp_varahamihira
+8068fa821287        hello-world         "/hello"            29 minutes ago      Exited (0) 29 minutes ago                       loving_rosalind
+root@docker-server:~#
+
+14) let us install some pkg/customize and push to docker hub, so that other people can pull it,
+run following in root@86599f34c664 ( container id)
+
+note: to connect to docker which is already running:
+docker exec -t -i container_name /bin/bash
+example:
+docker exec -t -i thirsty_montalcini /bin/bash
+
+1)apt-get update -y 
+2)apt-get install vim nodejs apache2 -y   => install these packages on containers..
+3)exit
+4)
+root@docker-server:~# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
+86599f34c664        ubuntu              "/bin/bash"         25 minutes ago      Exited (0) 3 minutes ago                        jovial_ramanujan
+9bd393516eaf        ubuntu              "/bin/bash"         26 minutes ago      Exited (0) 25 minutes ago                       nifty_boyd
+76dd46890ccd        hello-world         "/hello"            45 minutes ago      Exited (0) 45 minutes ago                       sharp_varahamihira
+8068fa821287        hello-world         "/hello"            45 minutes ago      Exited (0) 45 minutes ago                       loving_rosalind
+root@docker-server:~#
+5) Saving the status of the container,
+docker commit -m "Changing the container" -a "Appar" 86599f34c664 appars/mycustomisedcontainer-v1
+
+-----------
+root@docker-server:~# docker commit -m "Ubuntu with Apache" -a "Appar" 86599f34c664 appars/mycustomisedcontainer-v1
+sha256:c6ea6ff67f03b691f2fe924d94716ff6e9bc115d2c613416c92d52fca05436c8
+root@docker-server:~#
+------------
+
+6) Check the new images added,
+docker images
+
+root@docker-server:~# docker images
+REPOSITORY                        TAG                 IMAGE ID            CREATED             SIZE
+appars/mycustomisedcontainer-v1   latest              c6ea6ff67f03        8 minutes ago       310MB
+ubuntu                            latest              00fd29ccc6f1        9 hours ago         111MB
+debian                            latest              da653cee0545        3 days ago          100MB
+centos                            latest              3fa822599e10        2 weeks ago         204MB
+hello-world                       latest              f2a91732366c        3 weeks ago         1.85kB
+fedora                            latest              422dc563ca32        4 weeks ago         252MB
+root@docker-server:~#
+
+Usefull commands:
+=================
+docker ps
+docker ps -a
+docker ps -q 
+docker ps -aq
+docker ps -q -l
+
+
+7) now, let us put it into docker hub
+docker login
+appars/******
+
+root@docker-server:~# docker login
+Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
+Username: appars
+Password:
+Login Succeeded
+root@docker-server:~#
+
+
+8) docker info  // will give docker login info...
+
+9) docker push appars/mycustomisedcontainer-v1
+------------------
+root@docker-server:~# docker push appars/mycustomisedcontainer-v1
+The push refers to a repository [docker.io/appars/mycustomisedcontainer-v1]
+8b40c5cd914a: Pushed
+f17fc24fb8d0: Mounted from library/ubuntu
+6458f770d435: Mounted from library/ubuntu
+5a876f8f1a3d: Mounted from library/ubuntu
+d2f8c05d353b: Mounted from library/ubuntu
+48e0baf45d4d: Mounted from library/ubuntu
+latest: digest: sha256:739609b84759017751fbd320204d34ad8d86ce09d5eecac35de2c3cfe6925784 size: 1569
+root@docker-server:~#
+-------------------
+10) check in the browser thew new images appars/mycustomisedcontainer-v1 added.
+
+11) now remove local containers and pull it from docker hub,
+docker rmi appars/mycustomisedcontainer-v1
+docker pull appars/mycustomisedcontainer-v1
+
+---------------------------
+root@docker-server:~# docker rmi appars/mycustomisedcontainer-v1
+Untagged: appars/mycustomisedcontainer-v1:latest
+Untagged: appars/mycustomisedcontainer-v1@sha256:739609b84759017751fbd320204d34ad8d86ce09d5eecac35de2c3cfe6925784
+Deleted: sha256:c6ea6ff67f03b691f2fe924d94716ff6e9bc115d2c613416c92d52fca05436c8
+Deleted: sha256:7c166715be3c617993ef062c95eefb2d7fc3fee09a9a7a01a61482f007ce1dbb
+root@docker-server:~# docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+ubuntu              latest              00fd29ccc6f1        9 hours ago         111MB
+debian              latest              da653cee0545        3 days ago          100MB
+centos              latest              3fa822599e10        2 weeks ago         204MB
+hello-world         latest              f2a91732366c        3 weeks ago         1.85kB
+fedora              latest              422dc563ca32        4 weeks ago         252MB
+root@docker-server:~# docker pull appars/mycustomisedcontainer-v1
+Using default tag: latest
+latest: Pulling from appars/mycustomisedcontainer-v1
+50aff78429b1: Already exists
+f6d82e297bce: Already exists
+275abb2c8a6f: Already exists
+9f15a39356d6: Already exists
+fc0342a94c89: Already exists
+fa655ef3384b: Pull complete
+Digest: sha256:739609b84759017751fbd320204d34ad8d86ce09d5eecac35de2c3cfe6925784
+Status: Downloaded newer image for appars/mycustomisedcontainer-v1:latest
+root@docker-server:~#
+
+root@docker-server:~# docker images
+REPOSITORY                        TAG                 IMAGE ID            CREATED             SIZE
+appars/mycustomisedcontainer-v1   latest              c6ea6ff67f03        40 minutes ago      310MB
+ubuntu                            latest              00fd29ccc6f1        10 hours ago        111MB
+debian                            latest              da653cee0545        3 days ago          100MB
+centos                            latest              3fa822599e10        2 weeks ago         204MB
+hello-world                       latest              f2a91732366c        3 weeks ago         1.85kB
+fedora                            latest              422dc563ca32        4 weeks ago         252MB
+root@docker-server:~#
+// now images is pulled
+----------------------------------
+
+12) now, let us remove all the containers running,
+docker ps -a
+
+root@docker-server:~# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                         PORTS               NAMES
+86599f34c664        ubuntu              "/bin/bash"         About an hour ago   Exited (0) About an hour ago                       jovial_ramanujan
+9bd393516eaf        ubuntu              "/bin/bash"         About an hour ago   Exited (0) About an hour ago                       nifty_boyd
+76dd46890ccd        hello-world         "/hello"            2 hours ago         Exited (0) 2 hours ago                             sharp_varahamihira
+8068fa821287        hello-world         "/hello"            2 hours ago         Exited (0) 2 hours ago                             loving_rosalind
+root@docker-server:~# docker rm 86599f34c664 9bd393516eaf 76dd46890ccd 8068fa821287
+86599f34c664
+9bd393516eaf
+76dd46890ccd
+8068fa821287
+root@docker-server:~# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+root@docker-server:~#
+
+
+13) let us run the containers, got it from docker hub,
+
+---------------------
+root@docker-server:~# docker run -ti appars/mycustomisedcontainer-v1
+root@e68afb3b7a74:/# history  ==> previous histroy can be seen...
+    1  free -m
+    2  top
+    3  ifconifg
+    4  ifconfig
+    5  clear
+    6  ls
+    7  pwd
+    8  ls
+    9  apt-get update -y
+   10  apt-get install vim nodejs apache2 -y
+   11  exit
+   12  history
+
+14) If you check from docker-server, 
+root@docker-server:~# docker ps -a
+CONTAINER ID        IMAGE                             COMMAND             CREATED              STATUS              PORTS               NAMES
+e68afb3b7a74        appars/mycustomisedcontainer-v1   "/bin/bash"         About a minute ago   Up About a minute                       nostalgic_neumann
+root@docker-server:~#
+
+Note:
+To reconnect the docker which exited.
+
+docker start  <ONTAINER ID> # restart it in the background
+docker attach <ONTAINER ID> # reattach the terminal & stdin
+
+Alternative method:
+docker commit <ONTAINER ID> my_image
+docker run -t -i my_image /bin/bash
+
+
+Practice following commands:
+docker ps
+docker ps -a
+docker ps -q 
+docker ps -aq
+docker ps -q -l
+
+
+
+15) to remove all containers running in signle go,
+docker rm -f $(docker ps -aq)
+
+16) to remove all images 
+docker rmi -f $(docker images -aq) 
+docker images
+docker -ps -a
+// now its like clean machine....
+*****************************************************************************************
+commands to cleanup:
+====================
+docker rm -f $(docker ps -aq)
+docker rmi -f $(docker images -aq) 
+
+
+17) how to expose the port outside world.. for example, nginx has the port...
+
+docker pull nginx
+
+following command expose port 80 to base image port of 80 and then we can access from outside world..
+ifconfig/also browser also will work..when we run container, we need to expose the port.
+how to we expose the port...
+
+docker run -ti -d -p 80:80 nginx
+
+docker ps -a  => at base machine will show nginx is running..
+now check in browser if its working fine.. with base <docker-server machine>
+
+18) instead of fixed port.. We need kill old container and run it again on 80:80.. 
+so if we run with -P, it will automatically give new port every time..this will be useful for developer to test their code,
+docker run -ti -d -P nginx ( i.e -P will give new port exery time)
+
+****************************
+root@docker-server:~# docker run -ti -d -p 80:80 nginx
+14e0fc29bfd68a0a677709f248573abade8ed14c14f620ea4a3deb86057a6161
+root@docker-server:~# docker run -ti -d -P nginx
+28fa24f606e10fde72a22a32c1ca7ef993fde3aebc6677131c5ae46804185715
+root@docker-server:~# docker run -ti -d -P nginx
+1fd1090280588f3dd63db444e17004c0bd655f971c5cb1908ed9d9c060e13b4f
+root@docker-server:~# docker run -ti -d -P nginx
+e7a81527d5ac261731d27c265bee1f9b6894d938fafddf003f7ac63f5d56aeaa
+root@docker-server:~# docker run -ti -d -P nginx
+c434d004e5fb090cc566eb2eb81c785e3e38681a385fac9727f321c0929921a0
+root@docker-server:~# docker ps -a
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                   NAMES
+c434d004e5fb        nginx               "nginx -g 'daemon ..."   6 seconds ago       Up 6 seconds        0.0.0.0:32771->80/tcp   optimistic_sinoussi
+e7a81527d5ac        nginx               "nginx -g 'daemon ..."   8 seconds ago       Up 7 seconds        0.0.0.0:32770->80/tcp   dreamy_keller
+1fd109028058        nginx               "nginx -g 'daemon ..."   9 seconds ago       Up 8 seconds        0.0.0.0:32769->80/tcp   festive_allen
+28fa24f606e1        nginx               "nginx -g 'daemon ..."   10 seconds ago      Up 10 seconds       0.0.0.0:32768->80/tcp   nostalgic_stonebraker
+95037031547a        nginx               "nginx -g 'daemon ..."   20 minutes ago      Up 20 minutes       0.0.0.0:80->80/tcp      tender_kepler
+root@docker-server:~#
+
+check in the browser... as follows..
+http://192.168.0.3:32771/
+http://192.168.0.3:32770
+
+******************************************************************
+
+19) For Data Storage datacontainer volume is created from /tmp and shared other containers.
+
+Docker storage Analysis
+=======================
+1) create data container volume with ubuntu image which can be shared across containers..
+docker create -v /tmp --name datacontainer ubuntu
+2) check if this container is running,
+docker ps -a 
+3) In case too many continaers running, please clean up and re-run,
+docker rm -f $(docker ps -aq) and
+docker create -v /tmp --name datacontainer ubuntu
+
+4) now run a docker with this datacontainer
+docker run -ti --volumes-from datacontainer ubuntu /bin/bash
+
+5) now let us create some files under /tmp and try to create some files like test1, test2 test3..test10 
+
+6) exit from docker
+
+7) run another docker with same datacontainer
+
+ docker run -ti --volumes-from datacontainer ubuntu /bin/bash
+
+8) Go to 2nd docker, check under /tmp.. all the test1..test10 files will be there.
+ 
+Sample output:
+==============
+root@ubuntu:~# docker run -ti --volumes-from datacontainer ubuntu /bin/bash
+root@40b63f30554a:/#
+root@40b63f30554a:/# cd /tmp
+root@40b63f30554a:/tmp# ls
+root@40b63f30554a:/tmp# touch test1 test2 test3 test4
+root@40b63f30554a:/tmp# ls -ltr
+total 0
+-rw-r--r-- 1 root root 0 Dec 25 13:13 test4
+-rw-r--r-- 1 root root 0 Dec 25 13:13 test3
+-rw-r--r-- 1 root root 0 Dec 25 13:13 test2
+-rw-r--r-- 1 root root 0 Dec 25 13:13 test1
+root@40b63f30554a:/tmp# exit
+exit
+root@ubuntu:~# docker run -ti --volumes-from datacontainer ubuntu /bin/bash
+root@826ad96ddce7:/#
+root@826ad96ddce7:/# cd /tmp
+root@826ad96ddce7:/tmp# ls -ltr
+total 0
+-rw-r--r-- 1 root root 0 Dec 25 13:13 test4
+-rw-r--r-- 1 root root 0 Dec 25 13:13 test3
+-rw-r--r-- 1 root root 0 Dec 25 13:13 test2
+-rw-r--r-- 1 root root 0 Dec 25 13:13 test1
+root@826ad96ddce7:/tmp#
+
+*********************************************************** 
+Note: 
+In this storage model, issue is if we remove "datacontainer", all the data lost. but this is fine for local s/w testing.
+
+********************************************************************
+
+
+2nd Method for docker storage ( use hosting os direct storage)
+==============================
+1) clean up images and running docker in following order
+docker rm -f $(docker ps -aq)
+docker rmi -f $(docker images -aq) 
+
+2) let us have usecase like we want to keep nginx logs even after docker removed.
+	2.1) create folder in base machine	"mkdir ~/nginxlogs"
+	2.2) docker run -d -v ~/nginxlogs:/var/log/nginx -p 5000:80 -i nginx
+3) In the browser check nginx with base os ip:5000
+4) tail -f /root/nginxlogs/access.log
+root@ubuntu:~/nginxlogs# tail -f /root/nginxlogs/access.log
+192.168.0.13 - - [25/Dec/2017:14:41:51 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:57.0) Gecko/20100101 Firefox/57.0" "-"
+192.168.0.13 - - [25/Dec/2017:14:45:10 +0000] "GET /
+
+
+Steps to automate addressbook deployment on docker machine:
+***********************************************************
+1) create docekerfile with following content:
+root@docker-server:~# cat dockerfile
+FROM tomcat:8-jre8
+MAINTAINER "appar_p@yahoo.com"
+ADD addressbook.war /usr/local/tomcat/webapps
+
+root@docker-server:~#
+2)copy addressbook.war from jenkins machine 
+3)docker build -t addressbook .; docker images
+4)docker run -d -p 8080:8080 addressbook 
+
+
+Code for Pipeline
+===================
+1) add docker-server ips in /etc/ansible/hosts in jenkins machine.
+2) ansible all -m ping
+3) add following code in 007 project
+007-deploy-to-docker
+Build: Execute shell
+
+sudo ansible docker-server -m shell -a "docker ps -aq | xargs docker rm -f || true"
+sudo ansible docker-server -m shell -a "docker images -aq | xargs docker rmi -f || true"
+sudo ansible local -m shell -a "cp /var/lib/jenkins/workspace/005-create-war-file/target/addressbook.war /opt/"
+sudo ansible docker-server -m copy -a "src=/opt/addressbook.war dest=/root/"
+sudo ansible docker-server -m shell -a "docker build -t addressbook ."
+sudo ansible docker-server -m shell -a "docker run -d -p 8080:8080 tomcat-image"
+
+4) build pipeline
+*********************************end of docker******************************************
+
+Puppet
+======= 
+Puppet server installation
+==========================
+
+Puppet installation
+====================
+https://apt.puppetlabs.com/puppetlabs-release-pc1-xenial.deb
+	
+Puppet server installation
+===========================
+0) change hostname and reboot, then "apt-get update -y" command
+
+1) create fully qualified domainname
+update /etc/hosts on puppet server as follows, 
+root@puppet-server:~# cat /etc/hosts
+127.0.0.1       localhost
+127.0.1.1       ubuntu
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+192.168.0.8 puppet-server.local puppet-server
+192.168.0.10 puppet-client.local puppet-client
+root@puppet-server:~#
+
+Note: check with hostname -f commands
+it should show like puppet-server.local
+
+
+2) wget https://apt.puppetlabs.com/puppetlabs-release-pc1-xenial.deb
+3) dpkg -i puppetlabs-release-pc1-xenial.deb
+4) apt-get update
+5) now you can see entries in /etc/apt/sources.list.d
+
+root@puppet-server:~# cat /etc/apt/sources.list.d/puppetlabs-pc1.list
+# Puppetlabs PC1 xenial Repository
+deb http://apt.puppetlabs.com xenial PC1
+
+# Puppetlabs PC1 xenial Source Repository
+# The source repos are commented out by default because we
+# do not always make sources available for all packages or
+# for all platforms. If you want to access the source repos,
+# uncomment the following line.
+#deb-src http://apt.puppetlabs.com xenial PC1
+root@puppet-server:~#
+6) install puppet server:
+
+apt-get install puppetserver -y
+
+
+7) Restart puppet server
+systemctl stop puppetserver
+systemctl start puppetserver
+
+
+8) systemctl status puppetserver
+
+note:
+in case puppet server not starting, increase puppet-server ram to 4gb and 
+update following,
+
+Change the Java memory /etc/default/puppetserver 
+from
+
+JAVA_ARGS="-Xms2g -Xmx2g -XX:MaxPermSize=256m"
+
+to
+
+JAVA_ARGS="-Xms3g -Xmx3g -XX:MaxPermSize=256m"
+
+
+Puppet-Client Installation
+==========================
+0) change hostname and reboot, then "apt-get update -y" command
+
+1) create fully qualified domainname
+update /etc/hosts on puppet server as follows, 
+root@puppet-server:~# cat /etc/hosts
+127.0.0.1       localhost
+127.0.1.1       ubuntu
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+192.168.0.8 puppet-server.local puppet-server
+192.168.0.10 puppet-client.local puppet-client
+root@puppet-server:~#
+
+2) wget https://apt.puppetlabs.com/puppetlabs-release-pc1-xenial.deb
+3) dpkg -i puppetlabs-release-pc1-xenial.deb
+4) apt-get update
+5) now you can see entries in /etc/apt/sources.list.d
+
+root@puppet-server:~# cat /etc/apt/sources.list.d/puppetlabs-pc1.list
+# Puppetlabs PC1 xenial Repository
+deb http://apt.puppetlabs.com xenial PC1
+
+# Puppetlabs PC1 xenial Source Repository
+# The source repos are commented out by default because we
+# do not always make sources available for all packages or
+# for all platforms. If you want to access the source repos,
+# uncomment the following line.
+#deb-src http://apt.puppetlabs.com xenial PC1
+root@puppet-server:~#
+6) install puppet client
+apt-get install puppet -y  ==> note just puppet, means client
+
+
+
+Now let us connect puppet client and server
+============================================
+1) on clinet machine,
+puppet agent -t agent -t --server=puppet-server.local
+
+root@puppet-client:~# puppet agent -t --server=puppet-server.local
+Info: Caching certificate for ca
+Info: csr_attributes file loading from /etc/puppet/csr_attributes.yaml
+Info: Creating a new SSL certificate request for puppet-client.local
+Info: Certificate Request fingerprint (SHA256): DC:FA:D8:36:DF:B9:AE:5E:57:CD:8F:24:1D:B1:54:B6:0B:CB:FE:4A:70:CB:2E:B3:F5:3B:5C:D7:C4:D4:9A:43
+Info: Caching certificate for ca
+Exiting; no certificate found and waitforcert is disabled
+root@puppet-client:~#
+
+
+2) go to puppet-server
+puppet cert list -all
+
+root@puppet-server:~# puppet cert list -all
+  "puppet-client.local" (SHA256) DC:FA:D8:36:DF:B9:AE:5E:57:CD:8F:24:1D:B1:54:B6:0B:CB:FE:4A:70:CB:2E:B3:F5:3B:5C:D7:C4:D4:9A:43
++ "puppet-server.local" (SHA256) 3F:A9:93:82:19:84:24:41:3A:03:10:11:DD:3E:94:EA:EB:76:C2:BC:C9:DF:E8:A7:7F:B5:D4:20:49:68:5C:06 (alt names: "DNS:puppet", "DNS:puppet-server.local")
+root@puppet-server:~#
+
+Note:
+as + is missing infront of puppet-client.local, its not yet autorized.
+
+
+3) on the serverside,
+puppet cert sign puppet-client.local
+
+root@puppet-server:~# puppet cert sign puppet-client.local
+Signing Certificate Request for:
+  "puppet-client.local" (SHA256) DC:FA:D8:36:DF:B9:AE:5E:57:CD:8F:24:1D:B1:54:B6:0B:CB:FE:4A:70:CB:2E:B3:F5:3B:5C:D7:C4:D4:9A:43
+Notice: Signed certificate request for puppet-client.local
+Notice: Removing file Puppet::SSL::CertificateRequest puppet-client.local at '/etc/puppetlabs/puppet/ssl/ca/requests/puppet-client.local.pem'
+
+
+4) root@puppet-server:~# puppet cert list -all
++ "puppet-client.local" (SHA256) 17:63:6D:D3:5E:E1:F4:78:35:C3:4E:26:85:A4:DE:89:11:E0:6D:91:64:3D:65:56:F3:B1:52:39:B5:F6:23:D1
++ "puppet-server.local" (SHA256) 3F:A9:93:82:19:84:24:41:3A:03:10:11:DD:3E:94:EA:EB:76:C2:BC:C9:DF:E8:A7:7F:B5:D4:20:49:68:5C:06 (alt names: "DNS:puppet", "DNS:puppet-server.local")
+root@puppet-server:~#
+ 
+ now + is there...
+
+5) go to client machine,
+puppet agent --enable
+ 
+6)  /opt/puppetlabs/bin/puppet agent -t agent -t --server=puppet-server.local
+
+root@puppet-client:~# puppet agent -t agent -t --server=puppet-server.local
+Warning: Unable to fetch my node definition, but the agent run will continue:
+Warning: undefined method `include?' for nil:NilClass
+Info: Retrieving pluginfacts
+Info: Retrieving plugin
+Info: Caching catalog for puppet-client.local
+Info: Applying configuration version '1514385025'
+Info: Creating state file /var/lib/puppet/state/state.yaml
+Notice: Finished catalog run in 0.02 seconds
+
+Note: ignore the warining, its expected..
+
+Above message is seen means, its client and server are configured.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+addressbook deployment manual and then automatically
+=====================================================
+1) download tomcat module from forge.puppet.com and install
+puppet module install puppetlabs-tomcat --version 1.6.0
+
+2) puppet module install puppetlabs-java --version 1.6.0
+
+root@puppet-server:~# puppet module install puppetlabs-tomcat --version 1.6.0
+Notice: Preparing to install into /etc/puppetlabs/code/environments/production/modules ...
+Notice: Downloading from https://forgeapi.puppet.com ...
+
+******************************************
+puppet module install root@puppet-server:~# puppetlabs-tomcat --version 1.6.0
+Notice: Installing -- do not interrupt ...
+/etc/puppetlabs/code/environments/production/modules
+└─┬ puppetlabs-tomcat (v1.6.0)
+  ├── puppet-staging (v1.0.7)
+  ├── puppetlabs-concat (v2.2.1)
+  └── puppetlabs-stdlib (v4.24.0)
+root@puppet-server:~#
+root@puppet-server:~# puppet module install puppetlabs-java --version 1.6.0
+Notice: Preparing to install into /etc/puppetlabs/code/environments/production/modules ...
+Notice: Downloading from https://forgeapi.puppet.com ...
+Notice: Installing -- do not interrupt ...
+/etc/puppetlabs/code/environments/production/modules
+└─┬ puppetlabs-java (v1.6.0)
+  └── puppetlabs-stdlib (v4.24.0)
+root@puppet-server:~#
+***********************************************
+3) /etc/puppetlabs/code/environments/production/manifests have a puppet code to deploy addressbook,
+called site.pp  which will have following entries,
+
+***********************************
+root@puppet-server:/etc/puppetlabs/code/environments/production/manifests# cat site.pp
+node 'puppet-client.local' {
+        #its written in ruby and english format :)
+        class { 'java':
+                package => 'openjdk-8-jdk',
+        }
+        tomcat::install { '/opt/tomcat':
+                source_url => 'https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.46/bin/apache-tomcat-8.0.46.tar.gz'
+        }
+        #set tomcat home
+        tomcat::instance { 'default':
+                catalina_home => '/opt/tomcat',
+        }
+        tomcat::war {'addressbook.war':
+                catalina_base => '/opt/tomcat',
+                war_source => 'puppet:///modules/tomcat/addressbook.war',
+        }
+}
+root@puppet-server:/etc/puppetlabs/code/environments/production/manifests#
+
+***************************************
+
+
+4) copy addressbook.war file from jenkins machine as follows,
+
+root@puppet-server:~# scp 192.168.0.54:/opt/addressbook.war .
+Warning: Permanently added '192.168.0.54' (ECDSA) to the list of known hosts.
+root@192.168.0.54's password:
+addressbook.war                                                                                        100%   16MB  15.8MB/s   00:01
+root@puppet-server:~#
+
+5) 
+mkdir /etc/puppetlabs/code/environments/production/modules/tomcat/files
+cp addressbook.war /etc/puppetlabs/code/environments/production/modules/tomcat/files
+
+6) puppet agent -t --server=puppet-server.local
+
+root@puppet-client:~# puppet agent -t --server=puppet-server.local
+Info: Retrieving pluginfacts
+Info: Retrieving plugin
+Info: Loading facts
+Info: Caching catalog for puppet-client.local
+Info: Applying configuration version '1514783849'
+Notice: /Stage[main]/Main/Node[puppet-client.local]/Tomcat::War[addressbook.war]/Staging::File[addressbook.war]/File[/opt/tomcat/webapps/addressbook.war]/ensure: defined content as '{md5}4744ddf7b471fd3777b5bfc4469fa49a'
+Notice: /Stage[main]/Main/Node[puppet-client.local]/Tomcat::Instance[default]/Tomcat::Service[default]/Service[tomcat-default]/ensure: ensure changed 'stopped' to 'running'
+Info: /Stage[main]/Main/Node[puppet-client.local]/Tomcat::Instance[default]/Tomcat::Service[default]/Service[tomcat-default]: Unscheduling refresh on Service[tomcat-default]
+Notice: Finished catalog run in 2.02 seconds
+root@puppet-client:~#
+
+note: in case you want to remove java and tomcat manually on puppet-client machine,
+This is just info... its not required to do.
+apt-get remove --purge openjdk-8-jdk -y
+apt autoremove
+
+7) get ipaddress of puppet-client and check if addressbook working in browser
+example:
+http://192.168.0.17:8080/addressbook/
+
+
+8) for puppet auomation of 008 project add following code,
+008-deploy-to-puppet:  Build: Execute shell
+=============================================
+
+sudo ansible puppet-server -m shell -a "rm -rfv /etc/puppetlabs/code/environments/production/modules/tomcat/files/addressbook.war"
+sudo ansible puppet-client -m shell -a "rm -rfv /opt/tomcat/webapps/addressbook*"
+sudo ansible local -m shell -a "cp /var/lib/jenkins/workspace/005-create-war-file/target/addressbook.war /opt/"
+sudo ansible puppet-server -m copy -a "src=/opt/addressbook.war dest=/etc/puppetlabs/code/environments/production/modules/tomcat/files"
+sudo ansible puppet-client -m shell -a "/usr/bin/puppet agent -t --server=puppet-server.local" || true
+

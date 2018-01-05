@@ -1,19 +1,14 @@
-DOCKERS INSTALLATION CONFIGURATIONS
-===================================
-35)  dockers => containers (in actual job you will be working on this). light weight....
-VM machines limitations:
-1) can not be ported easily
-2) do not give full utilization of full h/w resource..
-3) recent trends people are moving towards containers..
-4) two edition - EE ( charchable), CE ( community edition is free)
-
-36) install docker community-open source edition
+install docker community-open source edition
 =================================================
 (https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/#install-from-a-package)
-1) apt-get install apt-transport-https ca-certificates curl software-properties-common -y // secure download
+
+0) apt-get update -y
+1) // secure download
+apt-get install apt-transport-https ca-certificates curl software-properties-common -y 
 2)//download key  and add
 wget https://download.docker.com/linux/ubuntu/gpg
 check with "cat gpg" for the Key content. ( Optional) 
+
 apt-key add gpg
 
 3) find out the release
@@ -21,27 +16,26 @@ root@ubuntu:~# lsb_release -cs
 xenial
 root@ubuntu:~#
 
-4)add repository into sources.lst
-vi /etc/apt/sources.lst
+4) //add repository
+vi /etc/apt/sources.list
 add the following at the end of the file,
 
 deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
 
-apt-get update -y
+5) apt-get update -y 
 
-5) apt-get install docker -y  //install docker community edition
-	apt-get install docker.io -y      do both
+6) apt-get install docker-ce -y  //install docker community edition
 
-6) docker --version
+7) docker --version
 
 root@docker-server:~# docker --version
 Docker version 17.09.1-ce, build 19e2cf6
 root@docker-server:~#
 
-7) sign up explore various images ( like redis, ubundu, ruby, phython..) on dockerhub...
+8) sign up explore various images ( like redis, ubundu, ruby, phython..) on dockerhub...
 https://hub.docker.com
 
-8) docker health check
+9) docker health check
 #docker run hello-world
 
 check following message appears in output, then docker is working fine,
@@ -50,28 +44,28 @@ Hello from Docker!
 This message shows that your installation appears to be working correctly.
 
 
-9) pull some standard images from docker hub, some of these are popular images.
-==============================================
+10) pull some standard images from remote docker hub, some of these are popular images.
+=======================================================================================
 docker pull ubuntu
 docker pull fedora
 docker pull debian
 docker pull centos
 
-10)  list of containers in the box
+11)  list of containers in the box
 docker images
 
-11) let us run some containers
+12) let us run some containers
 ===============================
 docker run -ti ubuntu  // ti--> run it in terminal and interactive mode
 
 ----------------
-root@docker-server:~# docker run -ti ubuntu
+root@docker-server:~# docker run -ti ubuntu /bin/bash
 root@86599f34c664:/#
 
 root@86599f34c664:/#  ==> this is prompt inside the container.
 ------------------
 
-12) 
+13) 
 on docker image: 918 free 
 
 root@86599f34c664:/# free -m
@@ -89,13 +83,13 @@ root@docker-server:~#
 
 
 also try top on both machine... it shows that container has full access to base machine..
-its like shared resource things.. use the memoery as required..
+its like shared resource things.. use the memory as required..
 
 KiB Mem :  2047868 total,   941960 free,   110852 used,   995056 buff/cache
 KiB Swap:  1048572 total,  1048572 free,        0 used.  1735836 avail Mem
 
-13) to check list of containers running,
-docker ps -a 
+14) to check list of containers running,
+docker ps -a  or docker ps // this is only for currently running docker.
 
 root@docker-server:~# docker ps -a
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
@@ -107,6 +101,12 @@ root@docker-server:~#
 
 14) let us install some pkg/customize and push to docker hub, so that other people can pull it,
 run following in root@86599f34c664 ( container id)
+
+note: to connect to docker which is already running:
+docker exec -t -i container_name /bin/bash
+example:
+docker exec -t -i thirsty_montalcini /bin/bash
+
 1)apt-get update -y 
 2)apt-get install vim nodejs apache2 -y   => install these packages on containers..
 3)exit
@@ -122,7 +122,7 @@ root@docker-server:~#
 docker commit -m "Changing the container" -a "Appar" 86599f34c664 appars/mycustomisedcontainer-v1
 
 -----------
-root@docker-server:~# docker commit -m "Changing the container" -a "Appar" 86599f34c664 appars/mycustomisedcontainer-v1
+root@docker-server:~# docker commit -m "Ubuntu with Apache" -a "Appar" 86599f34c664 appars/mycustomisedcontainer-v1
 sha256:c6ea6ff67f03b691f2fe924d94716ff6e9bc115d2c613416c92d52fca05436c8
 root@docker-server:~#
 ------------
@@ -140,6 +140,16 @@ hello-world                       latest              f2a91732366c        3 week
 fedora                            latest              422dc563ca32        4 weeks ago         252MB
 root@docker-server:~#
 
+Usefull commands:
+
+
+
+=================
+docker ps
+docker ps -a
+docker ps -q 
+docker ps -aq
+docker ps -q -l
 
 
 7) now, let us put it into docker hub
@@ -256,6 +266,27 @@ CONTAINER ID        IMAGE                             COMMAND             CREATE
 e68afb3b7a74        appars/mycustomisedcontainer-v1   "/bin/bash"         About a minute ago   Up About a minute                       nostalgic_neumann
 root@docker-server:~#
 
+Note:
+To reconnect the docker which exited.
+
+docker start  <ONTAINER ID> # restart it in the background
+docker attach <ONTAINER ID> # reattach the terminal & stdin
+then ctrl + c
+
+Alternative method: ( Not worked for me )
+docker commit <ONTAINER ID> my_image
+docker run -t -i my_image /bin/bash
+
+
+Practice following commands:
+docker ps
+docker ps -a
+docker ps -q 
+docker ps -aq
+docker ps -q -l
+
+
+
 15) to remove all containers running in signle go,
 docker rm -f $(docker ps -aq)
 
@@ -264,19 +295,28 @@ docker rmi -f $(docker images -aq)
 docker images
 docker -ps -a
 // now its like clean machine....
+*****************************************************************************************
+commands to cleanup:
+====================
+docker rm -f $(docker ps -aq)
+docker rmi -f $(docker images -aq) 
+
 
 17) how to expose the port outside world.. for example, nginx has the port...
+
 docker pull nginx
-docker run -ti nginx => ifconfig/also browser also will work..whhen we run container, we need to expose the port.
-how to we expose the port...
+
 following command expose port 80 to base image port of 80 and then we can access from outside world..
+ifconfig/also browser also will work..when we run container, we need to expose the port.
+how to we expose the port...
+
 docker run -ti -d -p 80:80 nginx
+
 docker ps -a  => at base machine will show nginx is running..
+now check in browser if its working fine.. with base <docker-server machine>
 
-now check in browser if its working fine.. at base machine <ip>
-
-18) instead of fixed port.. its needs kill old container and run it again on 80:80.. 
-so if we run with -P, it will automcaticlly give new port every time..this will be useful for devloper to test...
+18) instead of fixed port.. We need kill old container and run it again on 80:80.. 
+so if we run with -P, it will automatically give new port every time..this will be useful for developer to test their code,
 docker run -ti -d -P nginx ( i.e -P will give new port exery time)
 
 ****************************
@@ -305,5 +345,105 @@ http://192.168.0.3:32770
 
 ******************************************************************
 
+19) For Data Storage datacontainer volume is created from /tmp and shared other containers.
 
-S
+Docker storage Analysis
+=======================
+1) create data container volume with ubuntu image which can be shared across containers..
+	
+2) check if this container is running,
+docker ps -a 
+3) In case too many continaers running, please clean up and re-run,
+docker rm -f $(docker ps -aq) and
+docker create -v /tmp --name datacontainer ubuntu
+
+4) now run a docker with this datacontainer
+docker run -ti --volumes-from datacontainer ubuntu /bin/bash
+
+5) now let us create some files under /tmp and try to create some files like test1, test2 test3..test10 
+
+6) exit from docker
+
+7) run another docker with same datacontainer
+
+ docker run -ti --volumes-from datacontainer ubuntu /bin/bash
+
+8) Go to 2nd docker, check under /tmp.. all the test1..test10 files will be there.
+ 
+Sample output:
+==============
+root@ubuntu:~# docker run -ti --volumes-from datacontainer ubuntu /bin/bash
+root@40b63f30554a:/#
+root@40b63f30554a:/# cd /tmp
+root@40b63f30554a:/tmp# ls
+root@40b63f30554a:/tmp# touch test1 test2 test3 test4
+root@40b63f30554a:/tmp# ls -ltr
+total 0
+-rw-r--r-- 1 root root 0 Dec 25 13:13 test4
+-rw-r--r-- 1 root root 0 Dec 25 13:13 test3
+-rw-r--r-- 1 root root 0 Dec 25 13:13 test2
+-rw-r--r-- 1 root root 0 Dec 25 13:13 test1
+root@40b63f30554a:/tmp# exit
+exit
+root@ubuntu:~# docker run -ti --volumes-from datacontainer ubuntu /bin/bash
+root@826ad96ddce7:/#
+root@826ad96ddce7:/# cd /tmp
+root@826ad96ddce7:/tmp# ls -ltr
+total 0
+-rw-r--r-- 1 root root 0 Dec 25 13:13 test4
+-rw-r--r-- 1 root root 0 Dec 25 13:13 test3
+-rw-r--r-- 1 root root 0 Dec 25 13:13 test2
+-rw-r--r-- 1 root root 0 Dec 25 13:13 test1
+root@826ad96ddce7:/tmp#
+
+*********************************************************** 
+Note: 
+In this storage model, issue is if we remove "datacontainer", all the data lost. but this is fine for local s/w testing.
+
+********************************************************************
+
+
+2nd Method for docker storage ( use hosting os direct storage)
+==============================
+1) clean up images and running dockers..
+docker rm -f $(docker ps -aq)
+docker rmi -f $(docker images -aq) 
+
+2) let us have usecase like we want to keep nginx logs even after docker removed.
+	2.1) create folder in base machine	"mkdir ~/nginxlogs"
+	2.2) docker run -d -v ~/nginxlogs:/var/log/nginx -p 5000:80 -i nginx
+3) In the browser check nginx with base os ip:5000
+4) tail -f /root/nginxlogs/access.log
+root@ubuntu:~/nginxlogs# tail -f /root/nginxlogs/access.log
+192.168.0.13 - - [25/Dec/2017:14:41:51 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:57.0) Gecko/20100101 Firefox/57.0" "-"
+192.168.0.13 - - [25/Dec/2017:14:45:10 +0000] "GET /
+
+
+Steps to automate addressbook deployment on docker machine:
+***********************************************************
+1) create docekerfile with following content:
+root@docker-server:~# cat dockerfile
+FROM tomcat:8-jre8
+MAINTAINER "appar_p@yahoo.com"
+ADD addressbook.war /usr/local/tomcat/webapps
+root@docker-server:~#
+2)copy addressbook.war from jenkins machine 
+3)docker build -t tomcat-image .
+4)docker run -d -p 8080:8080 tomcat-image
+
+
+Code for Pipeline
+===================
+1) add docker-server ips in jenkins -server /etc/ansible/hosts
+2) ansible all -m ping
+3) add following code in 007 project
+007-deploy-to-docker
+Build: Execute shell
+sudo ansible docker-server -m shell -a "docker ps -aq | xargs docker rm -f || true"
+sudo ansible docker-server -m shell -a "docker images -aq | xargs docker rmi -f || true"
+sudo ansible local -m shell -a "cp /var/lib/jenkins/workspace/005-generate-war-file/target/addressbook.war /opt/"
+sudo ansible docker-server -m copy -a "src=/opt/addressbook.war dest=/root/"
+sudo ansible docker-server -m shell -a "docker build -t tomcat-image ."
+sudo ansible docker-server -m shell -a "docker run -d -p 8080:8080 tomcat-image"
+4) build pipeline
+*********************************end of docker*****************************************

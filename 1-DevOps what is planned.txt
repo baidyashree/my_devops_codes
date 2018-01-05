@@ -20,3 +20,83 @@ puppet-server
 puppet-client
 nagios-server
 nagios-client
+
+DevOps S/w Versions:
+====================
+git -> 2.14.2
+jenkins -> 2.73.1
+tomcat -> 8.5.23
+docker -> 17.6.2
+puppet -> 5.3
+nagios -> 4.3.4
+chef -> 12.18.14
+ansible -> 2.0.0.2
+
+IBM DevOPs Interview Question:
+==========================
+1) how to make variable constant (readonly) in shells script
+2) how to find how long system is up ( uptime -p) or top
+3) how to find difference bet files...
+4) when new person joins, what is the process for him to work on git project?
+5) what is push request in git?
+6) what is docker file/ how it works?
+7) What are package you use for devops pipeline?
+8) What port used for ssh?
+9) what port nagios uses? (snmp)
+10) what is difference between chmod and chown
+11) How to see the file which has continutes updates ex. log files.. 
+Ans: tail -f <filename>
+12) What is regx?
+13) Can the developer work on master branch?
+14) what ## and #! in shells script.
+The ## operator is used to remove any leading string that matches the pattern */. * is a wildcard character so */ means "any string followed by a forward slash".
+
+#! - Shebang
+#! defines the starting of the script execution. It helps in choosing the correct shell, so that some of the commands incompatible to a particular shell don’t fail.
+
+15) 
+$# holds number of arguments specified on command line. and $* or $@ refer to all
+arguments in passed to script. 
+
+$? expands to the exit status of the most recently executed foreground pipeline
+un_some_command
+EXIT_STATUS=$?
+
+if [ "$EXIT_STATUS" -eq "0" ]
+then
+    # Do work when command exists on success
+else
+    # Do work for when command has a failure exit
+fi
+
+16) shell doesn't understand $10 , $11 , etc. It treats $10 as if it were ${1}0 . But it does understand ${10} , ${11} 
+
+17) how to you get the list of email ids from a file
+18) how to do you get list of websites from a file
+
+Numerical permissions
+# 	Permission 	rwx
+7 	read, write and execute 	rwx
+6 	read and write 	rw-
+5 	read and execute 	r-x
+4 	read only 	r--
+3 	write and execute 	-wx
+2 	write only 	-w-
+1 	execute only 	--x
+0 	none 	---
+
+19) There are three types of quotes
+" i.e. Double Quotes
+' i.e. Single quotes
+` i.e. Back quote
+1."Double Quotes" - Anything enclose in double quotes removed meaning of that characters (except
+\ and $).
+2. 'Single quotes' - Enclosed in single quotes remains unchanged.
+3. `Back quote` - To execute command.
+For eg.
+$ echo "Today is date"
+Can't print message with today's date.
+$ echo "Today is `date`".
+Now it will print today's date as, Today is Tue Jan ....,See the `date` statement uses back quote
+
+20) 

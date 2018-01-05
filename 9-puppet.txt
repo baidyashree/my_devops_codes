@@ -1,0 +1,172 @@
+Puppet server installation
+==========================
+
+Puppet installation
+====================
+https://apt.puppetlabs.com/puppetlabs-release-pc1-xenial.deb
+	
+Puppet server installation
+===========================
+0) change hostname and reboot, then "apt-get update -y" command
+
+1) create fully qualified domainname
+update /etc/hosts on puppet server as follows, 
+root@puppet-server:~# cat /etc/hosts
+127.0.0.1       localhost
+127.0.1.1       ubuntu
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+192.168.0.8 puppet-server.local puppet-server
+192.168.0.10 puppet-client.local puppet-client
+root@puppet-server:~#
+
+Note: check with hostname -f commands
+it should show like puppet-server.local
+
+
+2) wget https://apt.puppetlabs.com/puppetlabs-release-pc1-xenial.deb
+3) dpkg -i puppetlabs-release-pc1-xenial.deb
+4) apt-get update
+5) now you can see entries in /etc/apt/sources.list.d
+
+root@puppet-server:~# cat /etc/apt/sources.list.d/puppetlabs-pc1.list
+# Puppetlabs PC1 xenial Repository
+deb http://apt.puppetlabs.com xenial PC1
+
+# Puppetlabs PC1 xenial Source Repository
+# The source repos are commented out by default because we
+# do not always make sources available for all packages or
+# for all platforms. If you want to access the source repos,
+# uncomment the following line.
+#deb-src http://apt.puppetlabs.com xenial PC1
+root@puppet-server:~#
+6) install puppet server:
+
+apt-get install puppetserver -y
+
+
+7) Restart puppet server
+systemctl stop puppetserver
+systemctl start puppetserver
+
+
+8) systemctl status puppetserver
+
+note:
+in case puppet server not starting, increase puppet-server ram to 4gb and 
+update following,
+
+Change the Java memory /etc/default/puppetserver 
+from
+
+JAVA_ARGS="-Xms2g -Xmx2g -XX:MaxPermSize=256m"
+
+to
+
+JAVA_ARGS="-Xms3g -Xmx3g -XX:MaxPermSize=256m"
+
+
+Puppet-Client Installation
+==========================
+0) change hostname and reboot, then "apt-get update -y" command
+
+1) create fully qualified domainname
+update /etc/hosts on puppet server as follows, 
+root@puppet-server:~# cat /etc/hosts
+127.0.0.1       localhost
+127.0.1.1       ubuntu
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+192.168.0.8 puppet-server.local puppet-server
+192.168.0.10 puppet-client.local puppet-client
+root@puppet-server:~#
+
+2) wget https://apt.puppetlabs.com/puppetlabs-release-pc1-xenial.deb
+3) dpkg -i puppetlabs-release-pc1-xenial.deb
+4) apt-get update
+5) now you can see entries in /etc/apt/sources.list.d
+
+root@puppet-server:~# cat /etc/apt/sources.list.d/puppetlabs-pc1.list
+# Puppetlabs PC1 xenial Repository
+deb http://apt.puppetlabs.com xenial PC1
+
+# Puppetlabs PC1 xenial Source Repository
+# The source repos are commented out by default because we
+# do not always make sources available for all packages or
+# for all platforms. If you want to access the source repos,
+# uncomment the following line.
+#deb-src http://apt.puppetlabs.com xenial PC1
+root@puppet-server:~#
+6) install puppet client
+apt-get install puppet -y  ==> note just puppet, means client
+
+
+
+Now let us connect puppet client and server
+============================================
+1) on clinet machine,
+puppet agent -t agent -t --server=puppet-server.local
+
+root@puppet-client:~# puppet agent -t agent -t --server=puppet-server.local
+Info: Caching certificate for ca
+Info: csr_attributes file loading from /etc/puppet/csr_attributes.yaml
+Info: Creating a new SSL certificate request for puppet-client.local
+Info: Certificate Request fingerprint (SHA256): DC:FA:D8:36:DF:B9:AE:5E:57:CD:8F:24:1D:B1:54:B6:0B:CB:FE:4A:70:CB:2E:B3:F5:3B:5C:D7:C4:D4:9A:43
+Info: Caching certificate for ca
+Exiting; no certificate found and waitforcert is disabled
+root@puppet-client:~#
+
+
+2) go to puppet-server
+puppet cert list -all
+
+root@puppet-server:~# puppet cert list -all
+  "puppet-client.local" (SHA256) DC:FA:D8:36:DF:B9:AE:5E:57:CD:8F:24:1D:B1:54:B6:0B:CB:FE:4A:70:CB:2E:B3:F5:3B:5C:D7:C4:D4:9A:43
++ "puppet-server.local" (SHA256) 3F:A9:93:82:19:84:24:41:3A:03:10:11:DD:3E:94:EA:EB:76:C2:BC:C9:DF:E8:A7:7F:B5:D4:20:49:68:5C:06 (alt names: "DNS:puppet", "DNS:puppet-server.local")
+root@puppet-server:~#
+
+Note:
+as + is missing infront of puppet-client.local, its not yet autorized.
+
+
+3) on the serverside,
+puppet cert sign puppet-client.local
+
+root@puppet-server:~# puppet cert sign puppet-client.local
+Signing Certificate Request for:
+  "puppet-client.local" (SHA256) DC:FA:D8:36:DF:B9:AE:5E:57:CD:8F:24:1D:B1:54:B6:0B:CB:FE:4A:70:CB:2E:B3:F5:3B:5C:D7:C4:D4:9A:43
+Notice: Signed certificate request for puppet-client.local
+Notice: Removing file Puppet::SSL::CertificateRequest puppet-client.local at '/etc/puppetlabs/puppet/ssl/ca/requests/puppet-client.local.pem'
+
+
+4) root@puppet-server:~# puppet cert list -all
++ "puppet-client.local" (SHA256) 17:63:6D:D3:5E:E1:F4:78:35:C3:4E:26:85:A4:DE:89:11:E0:6D:91:64:3D:65:56:F3:B1:52:39:B5:F6:23:D1
++ "puppet-server.local" (SHA256) 3F:A9:93:82:19:84:24:41:3A:03:10:11:DD:3E:94:EA:EB:76:C2:BC:C9:DF:E8:A7:7F:B5:D4:20:49:68:5C:06 (alt names: "DNS:puppet", "DNS:puppet-server.local")
+root@puppet-server:~#
+ 
+ now + is there...
+
+5) go to client machine,
+puppet agent --enable
+ 
+6)  puppet agent -t agent -t --server=puppet-server.local
+
+root@puppet-client:~# puppet agent -t agent -t --server=puppet-server.local
+Warning: Unable to fetch my node definition, but the agent run will continue:
+Warning: undefined method `include?' for nil:NilClass
+Info: Retrieving pluginfacts
+Info: Retrieving plugin
+Info: Caching catalog for puppet-client.local
+Info: Applying configuration version '1514385025'
+Info: Creating state file /var/lib/puppet/state/state.yaml
+Notice: Finished catalog run in 0.02 seconds
+
+Note: ignore the warining, its expected..
+
+Above message is seen means, its client and server are configured.

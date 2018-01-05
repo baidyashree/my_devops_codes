@@ -1,0 +1,18 @@
+1 syntax error - log view and codes changes
+2 working localy and faiiling in build
+3 jdk version 
+4 project compatibility
+5 html file generation in diff location 
+
+
+
+
+in aws create IAM with s3 full access then while ec2 instance creation go for iam role s3 wala
+
+then in ec2 instance command line
+
+aws s3 mb s3://name26232235
+aws s3 ls
+aws s3 cp source dest
+
+

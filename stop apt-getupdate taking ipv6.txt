@@ -1,0 +1,17 @@
+open 
+/etc/gai.conf
+
+Uncomment the following line start with precedence 
+For me it was 10 lines (make sure you don't uncomment the one that ends in 10 )
+
+Save and exit.
+
+reload yes
+precedence ::ffff:0:0/96 100
+#precedence ::/0 10
+
+create a new file like /etc/apt/apt.conf.d/99force-ipv4
+
+Aquire::ForceIPv4 false;     (   give this entry )
+
+save & exit
