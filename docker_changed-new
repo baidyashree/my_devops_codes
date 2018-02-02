@@ -2,7 +2,7 @@ docker pull ubuntu
 
 docker images
 
-docker run -ti --name docker1 ubuntu
+docker run -ti --name docker1 ubuntu 
 
 note: to connect to docker which is already running:
 	
@@ -47,18 +47,17 @@ permanent
 
 
 
-1) create docekerfile with following content:
+create docekerfile with following content:
+copy addressbook.war from jenkins machine to /root
+
 root@docker-server:~# cat dockerfile
 FROM tomcat:8-jre8
 MAINTAINER "baidyashree@gmail.com"
 ADD addressbook.war /usr/local/tomcat/webapps
 
-root@docker-server:~#
-2)copy addressbook.war from jenkins machine 
+docker build -t --name tomcat-image /root(path where addressbook.war is present in docker-server)
 
-3)docker build -t tomcat-image .
-
-4)docker run -d -p 8080:8080 tomcat-image
+docker run -d -p 8080:8080 tomcat-image
 
 sudo ansible docker-server -m shell -a "docker ps -aq | xargs docker rm -f || true"
 sudo ansible docker-server -m shell -a "docker images -aq | xargs docker rmi -f || true"
