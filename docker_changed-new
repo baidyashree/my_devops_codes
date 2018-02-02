@@ -1,0 +1,72 @@
+docker pull ubuntu
+
+docker images
+
+docker run -ti --name docker1 ubuntu
+
+note: to connect to docker which is already running:
+	
+	docker exec -t -i container_name /bin/bash
+
+docker ps -a
+
+docker tag (docker name) (docker_user-id/dockername)
+
+docker login
+
+docker push (docker_user-id/dockername)
+
+docker info
+
+docker rm (containername)
+
+docker rmi (image name)
+
+To reconnect the docker which exited.
+
+	docker start  <ONTAINER ID> # restart it in the background
+	docker attach <ONTAINER ID> # reattach the terminal & stdin
+	then ctrl + c
+
+to remove all containers running in signle go
+	
+	docker rm -f $(docker ps -aq)
+	docker rmi -f $(docker images -aq) 
+
+docker run -ti -d -p 80:80 nginx
+docker run -ti -d -P nginx
+
+
+docker create -v /tmp --name datacontainer ubuntu          how many container we will create with datacontainer all file will be sync to /tmp
+docker run -ti --volumes-from datacontainer ubuntu
+
+In this storage model, issue is if we remove "datacontainer", all the data lost. 
+
+permanent 
+	docker run -d -v /root/nginxlogs:/var/log/nginx -p 5000:80 -i nginx 			//nginxlog is a file created under /root
+
+
+
+1) create docekerfile with following content:
+root@docker-server:~# cat dockerfile
+FROM tomcat:8-jre8
+MAINTAINER "baidyashree@gmail.com"
+ADD addressbook.war /usr/local/tomcat/webapps
+
+root@docker-server:~#
+2)copy addressbook.war from jenkins machine 
+
+3)docker build -t tomcat-image .
+
+4)docker run -d -p 8080:8080 tomcat-image
+
+sudo ansible docker-server -m shell -a "docker ps -aq | xargs docker rm -f || true"
+sudo ansible docker-server -m shell -a "docker images -aq | xargs docker rmi -f || true"
+sudo ansible local -m shell -a "cp /var/lib/jenkins/workspace/005-generate-war-file/target/addressbook.war /opt/"
+sudo ansible docker-server -m copy -a "src=/opt/addressbook.war dest=/root/"
+sudo ansible docker-server -m shell -a "docker build -t tomcat-image ."
+sudo ansible docker-server -m shell -a "docker run -d -p 8080:8080 tomcat-image"
+
+
+
+
